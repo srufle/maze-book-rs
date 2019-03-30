@@ -12,6 +12,7 @@ use slog::Logger;
 mod maze {
     use slog::Drain;
     use slog::Logger;
+    use std::fmt;
 
     #[derive(Debug)]
     pub struct Maze {
@@ -67,13 +68,57 @@ mod maze {
         }
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Copy, Clone)]
+    pub struct MazePosition {
+        col: u32,
+        row: u32,
+        direction: Direction,
+    }
+    impl MazePosition {
+        pub fn new(col: u32, row: u32, direction: Direction) -> MazePosition {
+            MazePosition {
+                col: col,
+                row: row,
+                direction: direction,
+            }
+        }
+        pub fn col(&self) -> u32 {
+            self.col
+        }
+        pub fn row(&self) -> u32 {
+            self.row
+        }
+    }
+    impl fmt::Display for MazePosition {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(
+                f,
+                "{col}, {row}, {direction}",
+                col = self.col,
+                row = self.row,
+                direction = self.direction
+            )
+        }
+    }
+    #[derive(Debug, Copy, Clone)]
     pub enum Direction {
         None,
         North,
         East,
         South,
         West,
+    }
+    impl fmt::Display for Direction {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            let printable = match *self {
+                Direction::None => "0",
+                Direction::North => "N",
+                Direction::East => "E",
+                Direction::South => "S",
+                Direction::West => "W",
+            };
+            write!(f, "{}", printable)
+        }
     }
 }
 fn logger() -> Logger {
@@ -91,32 +136,43 @@ fn coin_flip() -> bool {
 
 use maze::Direction;
 use maze::Maze;
+use maze::MazePosition as MazPos;
 
 fn main() {
-    let mut flips: Vec<(u32, u32, Direction)> = Vec::new();
+    let mut maze_positions: Vec<MazPos> = Vec::new();
     let maze = Maze::new(4, 4);
-    let upper_limit = maze.total_cells();
-    let our_grid = maze.grid();
-
-    info!(logger(), "{:?}", our_grid);
 
     for row in 0..maze.length() {
         for col in 0..maze.width() {
             if maze.at_upper_right(col, row) {
-                flips.push((col, row, Direction::None));
+                maze_positions.push(MazPos::new(col, row, Direction::None));
             } else if maze.at_upper(row) {
-                flips.push((col, row, Direction::East));
+                maze_positions.push(MazPos::new(col, row, Direction::East));
             } else if maze.at_right(col) {
-                flips.push((col, row, Direction::North));
+                maze_positions.push(MazPos::new(col, row, Direction::North));
             } else {
                 let coin = coin_flip();
                 if coin {
-                    flips.push((col, row, Direction::North));
+                    maze_positions.push(MazPos::new(col, row, Direction::North));
                 } else {
-                    flips.push((col, row, Direction::East));
+                    maze_positions.push(MazPos::new(col, row, Direction::East));
                 }
             }
         }
     }
-    info!(logger(), "Maze = {:?} ", flips);
+    display_maze(maze, maze_positions);
+}
+fn display_maze(maze: Maze, mut positions: Vec<MazPos>) {
+    let mut col = 1;
+
+    debug!(logger(), "{:?}", positions);
+    positions.sort_by_key(|p| maze.total_cells() - p.row());
+    debug!(logger(), "{:?}", positions);
+    for pos in positions {
+        print!("{}|", pos.to_string());
+        if col % 4 == 0 {
+            print!("\n");
+        }
+        col += 1;
+    }
 }
