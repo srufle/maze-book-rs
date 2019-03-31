@@ -59,7 +59,7 @@ impl Maze {
         self.length
     }
 
-    pub fn display(&self, mut positions: Vec<MazePosition>) {
+    pub fn display(&self, mut positions: Vec<Position>) {
         let mut col = 1;
 
         debug!(Maze::logger(), "{:?}", positions);
@@ -76,14 +76,14 @@ impl Maze {
 }
 
 #[derive(Debug, Copy, Clone)]
-pub struct MazePosition {
+pub struct Position {
     col: u32,
     row: u32,
     direction: Direction,
 }
-impl MazePosition {
-    pub fn new(col: u32, row: u32, direction: Direction) -> MazePosition {
-        MazePosition {
+impl Position {
+    pub fn new(col: u32, row: u32, direction: Direction) -> Position {
+        Position {
             col: col,
             row: row,
             direction: direction,
@@ -96,7 +96,7 @@ impl MazePosition {
         self.row
     }
 }
-impl fmt::Display for MazePosition {
+impl fmt::Display for Position {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
