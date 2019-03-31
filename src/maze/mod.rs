@@ -1,10 +1,8 @@
-// #[macro_use]
-// extern crate slog;
+extern crate rand;
 extern crate slog_async;
 extern crate slog_term;
 
-// mod maze {
-
+use rand::prelude::*;
 use slog::Drain;
 use slog::Logger;
 use std::fmt;
@@ -13,16 +11,18 @@ use std::fmt;
 pub struct Maze {
     width: u32,
     length: u32,
-    // positions: Vec<MazePosition>,
+}
+
+pub fn coin_flip() -> bool {
+    let mut rng = StdRng::from_entropy();
+    rng.gen_bool(0.5)
 }
 
 impl Maze {
     pub fn new(width: u32, length: u32) -> Maze {
-        // let positions: Vec<MazePosition> = Vec::new();
         Maze {
             width: width,
             length: length,
-            // positions: positions,
         }
     }
     fn logger() -> Logger {
@@ -64,10 +64,43 @@ impl Maze {
     pub fn length(&self) -> u32 {
         self.length
     }
+    pub fn generate(&self) -> Vec<MazePosition> {
+        let mut positions: Vec<MazePosition> = Vec::new();
+        for row in 0..self.length() {
+            for col in 0..self.width() {
+                if self.at_upper_right(col, row) {
+                    positions.push(MazePosition::new(col, row, Direction::None));
+                } else if self.at_upper(row) {
+                    positions.push(MazePosition::new(col, row, Direction::East));
+                } else if self.at_right(col) {
+                    positions.push(MazePosition::new(col, row, Direction::North));
+                } else {
+                    let coin = coin_flip();
+                    if coin {
+                        positions.push(MazePosition::new(col, row, Direction::North));
+                    } else {
+                        positions.push(MazePosition::new(col, row, Direction::East));
+                    }
+                }
+            }
+        }
+        positions
+    }
 
-    // pub fn positions(&mut self) -> Vec<MazePosition> {
-    //     self.positions
-    // }
+    pub fn display(&self, mut positions: Vec<MazePosition>) {
+        let mut col = 1;
+
+        debug!(Maze::logger(), "{:?}", positions);
+        positions.sort_by_key(|p| self.total_cells() - p.row());
+        debug!(Maze::logger(), "{:?}", positions);
+        for pos in positions {
+            print!("{}|", pos.to_string());
+            if col % self.width() == 0 {
+                print!("\n");
+            }
+            col += 1;
+        }
+    }
 }
 
 #[derive(Debug, Copy, Clone)]
