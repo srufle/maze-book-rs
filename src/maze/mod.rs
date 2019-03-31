@@ -6,6 +6,7 @@ use rand::prelude::*;
 use slog::Drain;
 use slog::Logger;
 use std::fmt;
+pub mod binary_tree;
 
 #[derive(Debug)]
 pub struct Maze {
@@ -38,13 +39,6 @@ impl Maze {
         self.length * self.width
     }
 
-    pub fn grid(&self) -> Vec<u32> {
-        let size = self.total_cells();
-        debug!(Maze::logger(), "size={}", size);
-        let vec = vec![0; size as usize];
-        vec
-    }
-
     pub fn at_upper(&self, row: u32) -> bool {
         (self.length == row + 1)
     }
@@ -63,28 +57,6 @@ impl Maze {
 
     pub fn length(&self) -> u32 {
         self.length
-    }
-    pub fn generate(&self) -> Vec<MazePosition> {
-        let mut positions: Vec<MazePosition> = Vec::new();
-        for row in 0..self.length() {
-            for col in 0..self.width() {
-                if self.at_upper_right(col, row) {
-                    positions.push(MazePosition::new(col, row, Direction::None));
-                } else if self.at_upper(row) {
-                    positions.push(MazePosition::new(col, row, Direction::East));
-                } else if self.at_right(col) {
-                    positions.push(MazePosition::new(col, row, Direction::North));
-                } else {
-                    let coin = coin_flip();
-                    if coin {
-                        positions.push(MazePosition::new(col, row, Direction::North));
-                    } else {
-                        positions.push(MazePosition::new(col, row, Direction::East));
-                    }
-                }
-            }
-        }
-        positions
     }
 
     pub fn display(&self, mut positions: Vec<MazePosition>) {
@@ -155,4 +127,4 @@ impl fmt::Display for Direction {
         write!(f, "{}", printable)
     }
 }
-// }
+
