@@ -110,18 +110,22 @@ impl Maze {
 }
 
 // TODO: Sindwinder requires the ability to defined multiple directions at a position
-#[derive(Debug, Copy, Clone)]
+type Directions = RefCell<Vec<Direction>>;
+
+#[derive(Debug, Clone)]
 pub struct Position {
     col: u32,
     row: u32,
-    direction: Direction,
+    directions: Directions,
 }
 impl Position {
-    pub fn new(col: u32, row: u32, direction: Direction) -> Position {
+    pub fn new(col: u32, row: u32, directions: Direction) -> Position {
+        let _directions: Directions = RefCell::new(Vec::new());
+        _directions.borrow_mut().push(directions);
         Position {
             col: col,
             row: row,
-            direction: direction,
+            directions: _directions,
         }
     }
     pub fn col(&self) -> u32 {
@@ -130,18 +134,43 @@ impl Position {
     pub fn row(&self) -> u32 {
         self.row
     }
+    pub fn push_direction(&self, direction: Direction) {
+        self.directions.borrow_mut().push(direction);
+    }
+
+    pub fn directions(&self) -> Vec<Direction> {
+        self.directions.borrow_mut().to_vec()
+    }
+    pub fn direction(&self) -> Direction {
+        let direction = self.directions.borrow_mut().to_vec().pop();
+        match direction {
+            Some(Direction::North) => Direction::North,
+            Some(Direction::East) => Direction::East,
+            Some(Direction::South) => Direction::South,
+            Some(Direction::West) => Direction::West,
+            _ => Direction::None,
+        }
+    }
 }
 impl fmt::Display for Position {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let directions = self.directions();
+        let mut items: Vec<String> = Vec::new();
+        for dir in directions {
+            let s = format!("{}", dir);
+            items.push(s);
+        }
+        let direction_str = format!("({})", &items.join(","));
         write!(
             f,
-            "{col:02}, {row:02}, {direction}",
+            "{col:02}, {row:02}, {directions}",
             col = self.col,
             row = self.row,
-            direction = self.direction
+            directions = direction_str
         )
     }
 }
+
 #[derive(Debug, Copy, Clone)]
 pub enum Direction {
     None,
