@@ -14,8 +14,8 @@ use maze::Maze;
 fn main() {
     
     let maze = Maze::new(4, 4);
-    let positions = maze::binary_tree::generate(&maze);
-    maze.display(positions);
+    maze::binary_tree::generate(&maze);
+    maze.display();
     
 }
 
