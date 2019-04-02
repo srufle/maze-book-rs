@@ -8,8 +8,9 @@ use slog::Logger;
 use std::cell::RefCell;
 use std::fmt;
 pub mod binary_tree;
+pub mod sidewinder;
 
-type Positions = RefCell<Vec<Position>>;
+pub type Positions = RefCell<Vec<Position>>;
 
 #[derive(Debug)]
 pub struct Maze {
@@ -21,6 +22,11 @@ pub struct Maze {
 pub fn coin_flip() -> bool {
     let mut rng = StdRng::from_entropy();
     rng.gen_bool(0.5)
+}
+
+pub fn choose_cell(low: u32, high: u32) -> u32 {
+    let mut rng = StdRng::from_entropy();
+    rng.gen_range(low, high)
 }
 
 impl Maze {
@@ -136,6 +142,10 @@ impl Position {
     }
     pub fn push_direction(&self, direction: Direction) {
         self.directions.borrow_mut().push(direction);
+    }
+
+    pub fn pop_direction(&self) -> Option<Direction> {
+        self.directions.borrow_mut().pop()
     }
 
     pub fn directions(&self) -> Vec<Direction> {

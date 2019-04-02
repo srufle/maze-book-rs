@@ -13,9 +13,15 @@ use maze::Maze;
 
 fn main() {
     
+    println!("binary_tree");
     let maze = Maze::new(4, 4);
     maze::binary_tree::generate(&maze);
     maze.display();
+
+    println!("sidewinder");
+    let maze_sw = Maze::new(4, 4);
+    maze::sidewinder::generate(&maze_sw);
+    maze_sw.display();
     
 }
 
