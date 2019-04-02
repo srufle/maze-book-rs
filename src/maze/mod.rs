@@ -115,7 +115,6 @@ impl Maze {
     }
 }
 
-// TODO: Sindwinder requires the ability to defined multiple directions at a position
 type Directions = RefCell<Vec<Direction>>;
 
 #[derive(Debug, Clone)]
