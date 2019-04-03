@@ -6,27 +6,19 @@ use rand::prelude::*;
 use slog::Drain;
 use slog::Logger;
 use std::cell::RefCell;
-use std::fmt;
 pub mod binary_tree;
+pub mod direction;
+pub mod position;
 pub mod sidewinder;
 
-pub type Positions = RefCell<Vec<Position>>;
+use direction::*;
+use position::*;
 
 #[derive(Debug)]
 pub struct Maze {
     width: u32,
     length: u32,
     positions: Positions,
-}
-
-pub fn coin_flip() -> bool {
-    let mut rng = StdRng::from_entropy();
-    rng.gen_bool(0.5)
-}
-
-pub fn choose_cell(low: u32, high: u32) -> u32 {
-    let mut rng = StdRng::from_entropy();
-    rng.gen_range(low, high)
 }
 
 impl Maze {
@@ -115,88 +107,12 @@ impl Maze {
     }
 }
 
-type Directions = RefCell<Vec<Direction>>;
-
-#[derive(Debug, Clone)]
-pub struct Position {
-    col: u32,
-    row: u32,
-    directions: Directions,
-}
-impl Position {
-    pub fn new(col: u32, row: u32, directions: Direction) -> Position {
-        let _directions: Directions = RefCell::new(Vec::new());
-        _directions.borrow_mut().push(directions);
-        Position {
-            col: col,
-            row: row,
-            directions: _directions,
-        }
-    }
-    pub fn col(&self) -> u32 {
-        self.col
-    }
-    pub fn row(&self) -> u32 {
-        self.row
-    }
-    pub fn push_direction(&self, direction: Direction) {
-        self.directions.borrow_mut().push(direction);
-    }
-
-    pub fn pop_direction(&self) -> Option<Direction> {
-        self.directions.borrow_mut().pop()
-    }
-
-    pub fn directions(&self) -> Vec<Direction> {
-        self.directions.borrow_mut().to_vec()
-    }
-    pub fn direction(&self) -> Direction {
-        let direction = self.directions.borrow_mut().to_vec().pop();
-        match direction {
-            Some(Direction::North) => Direction::North,
-            Some(Direction::East) => Direction::East,
-            Some(Direction::South) => Direction::South,
-            Some(Direction::West) => Direction::West,
-            _ => Direction::None,
-        }
-    }
-}
-impl fmt::Display for Position {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let directions = self.directions();
-        let mut items: Vec<String> = Vec::new();
-        for dir in directions {
-            let s = format!("{}", dir);
-            items.push(s);
-        }
-        let direction_str = format!("({})", &items.join(","));
-        write!(
-            f,
-            "{col:02}, {row:02}, {directions}",
-            col = self.col,
-            row = self.row,
-            directions = direction_str
-        )
-    }
+pub fn coin_flip() -> bool {
+    let mut rng = StdRng::from_entropy();
+    rng.gen_bool(0.5)
 }
 
-#[derive(Debug, Copy, Clone)]
-pub enum Direction {
-    None,
-    North,
-    East,
-    South,
-    West,
-}
-impl fmt::Display for Direction {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let printable = match *self {
-            Direction::None => "0",
-            Direction::North => "N",
-            Direction::East => "E",
-            Direction::South => "S",
-            Direction::West => "W",
-        };
-        write!(f, "{}", printable)
-    }
+pub fn choose_cell(low: u32, high: u32) -> u32 {
+    let mut rng = StdRng::from_entropy();
+    rng.gen_range(low, high)
 }
