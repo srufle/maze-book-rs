@@ -30,6 +30,15 @@ impl Maze {
             positions: positions,
         }
     }
+    pub fn blank(width: u32, length: u32) -> Maze {
+        let mut maze = Maze::new(width, length);
+        for row in 0..maze.length() {
+            for col in 0..maze.width() {
+                maze.push_position(Position::new(col, row, Direction::None));
+            }
+        }
+        maze
+    }
     fn logger() -> Logger {
         let decorator = slog_term::TermDecorator::new().build();
         let drain = slog_term::FullFormat::new(decorator).build().fuse();

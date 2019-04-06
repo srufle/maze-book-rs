@@ -12,7 +12,11 @@ mod maze;
 use maze::Maze;
 
 fn main() {
-    
+
+    println!("blank");
+    let maze = Maze::blank(4,4);
+    maze.display();
+
     println!("binary_tree");
     let maze = Maze::new(4, 4);
     maze::binary_tree::generate(&maze);
