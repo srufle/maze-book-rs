@@ -6,8 +6,12 @@ use rand::prelude::*;
 use slog::Drain;
 use slog::Logger;
 use std::cell::RefCell;
+use std::collections::HashSet;
+use std::fmt;
 pub mod binary_tree;
+pub mod cell;
 pub mod direction;
+pub mod grid;
 pub mod position;
 pub mod sidewinder;
 
@@ -31,7 +35,7 @@ impl Maze {
         }
     }
     pub fn blank(width: u32, length: u32) -> Maze {
-        let mut maze = Maze::new(width, length);
+        let maze = Maze::new(width, length);
         for row in 0..maze.length() {
             for col in 0..maze.width() {
                 maze.push_position(Position::new(col, row, Direction::None));
