@@ -9,13 +9,20 @@ use slog::Drain;
 use slog::Logger;
 
 mod maze;
+use maze::grid::Grid;
 use maze::Maze;
 
+#[cfg(not(test))]
 fn main() {
-
     println!("blank");
-    let maze = Maze::blank(4,4);
+    let maze = Maze::blank(4, 4);
     maze.display();
+
+    println!("binary_tree grid");
+    let mut grid = Grid::new(4, 4);
+    grid.init();
+    maze::binary_tree::generate_grid(&mut grid);
+    grid.display();
 
     println!("binary_tree");
     let maze = Maze::new(4, 4);
@@ -26,7 +33,6 @@ fn main() {
     let maze_sw = Maze::new(4, 4);
     maze::sidewinder::generate(&maze_sw);
     maze_sw.display();
-    
 }
 
 fn logger() -> Logger {
@@ -37,4 +43,3 @@ fn logger() -> Logger {
     let log = slog::Logger::root(drain, o!());
     log
 }
-
