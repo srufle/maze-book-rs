@@ -54,7 +54,7 @@ impl Grid {
             (_, row) if row >= self.length() => None,
             (col, row) => {
                 let index = (self.width() * row) + col;
-                if index >= 0 && index <= (self.width() * self.length()) - 1 {
+                if index <= (self.width() * self.length()) - 1 {
                     Some(self.cells[index])
                 } else {
                     None
@@ -69,7 +69,7 @@ impl Grid {
             (_, row) if row >= self.length() => panic!("Tried to update ({},{})", col, row),
             (col, row) => {
                 let index = (self.width() * row) + col;
-                if index >= 0 && index <= (self.width() * self.length()) - 1 {
+                if index <= (self.width() * self.length()) - 1 {
                     self.cells[index] = cell
                 } else {
                     panic!("Tried to update ({},{})", col, row)
