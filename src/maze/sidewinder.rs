@@ -1,6 +1,7 @@
-use crate::maze::grid::Grid;
-use crate::maze::Direction;
+use crate::maze::Grid;
 use crate::maze::Maze;
+use crate::maze::utils;
+use crate::maze::Direction;
 use crate::maze::Position;
 
 pub fn generate(maze: &Maze) {
@@ -14,7 +15,7 @@ pub fn generate(maze: &Maze) {
             } else if maze.at_right(col) {
                 run.push(Position::new(col, row, Direction::North));
             } else {
-                let coin = crate::maze::coin_flip();
+                let coin = utils::coin_flip();
                 if coin {
                     if run.len() == 0 {
                         run.push(Position::new(col, row, Direction::North));
@@ -22,8 +23,7 @@ pub fn generate(maze: &Maze) {
                         run.push(Position::new(col, row, Direction::East));
                         let low = &run[0];
                         let high = &run[run.len() - 1];
-                        let run_index: usize =
-                            crate::maze::choose_cell(low.col(), high.col()) as usize;
+                        let run_index: usize = utils::choose_cell(low.col(), high.col()) as usize;
                         run[run_index].push_direction(Direction::North);
                     }
 
@@ -70,7 +70,7 @@ pub fn generate_grid(maze: &mut Grid) {
                 maze.link_north(col, row);
                 run.push((col, row));
             } else {
-                let coin = crate::maze::coin_flip();
+                let coin = utils::coin_flip();
                 if coin {
                     if run.len() == 0 {
                         maze.link_north(col, row);
@@ -80,7 +80,7 @@ pub fn generate_grid(maze: &mut Grid) {
                         run.push((col, row));
                         let low = &run[0];
                         let high = &run[run.len() - 1];
-                        let run_index: usize = crate::maze::choose_cell(low.0, high.0) as usize;
+                        let run_index: usize = utils::choose_cell(low.0, high.0) as usize;
                         maze.link_north(run_index, row);
                     }
 

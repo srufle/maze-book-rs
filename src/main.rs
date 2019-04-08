@@ -9,8 +9,8 @@ use slog::Drain;
 use slog::Logger;
 
 mod maze;
-use maze::grid::Grid;
-use maze::Maze;
+use maze::Grid;
+use maze::maze::Maze;
 
 #[cfg(not(test))]
 fn main() {
