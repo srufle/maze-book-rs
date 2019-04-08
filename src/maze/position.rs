@@ -7,13 +7,13 @@ pub type Positions = RefCell<Vec<Position>>;
 
 #[derive(Debug, Clone)]
 pub struct Position {
-    col: u32,
-    row: u32,
+    col: usize,
+    row: usize,
     directions: Directions,
 }
 
 impl Position {
-    pub fn new(col: u32, row: u32, directions: Direction) -> Position {
+    pub fn new(col: usize, row: usize, directions: Direction) -> Position {
         let _directions: Directions = RefCell::new(Vec::new());
         _directions.borrow_mut().push(directions);
         Position {
@@ -22,10 +22,10 @@ impl Position {
             directions: _directions,
         }
     }
-    pub fn col(&self) -> u32 {
+    pub fn col(&self) -> usize {
         self.col
     }
-    pub fn row(&self) -> u32 {
+    pub fn row(&self) -> usize {
         self.row
     }
     pub fn push_direction(&self, direction: Direction) {

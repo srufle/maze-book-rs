@@ -20,13 +20,13 @@ use position::*;
 
 #[derive(Debug)]
 pub struct Maze {
-    width: u32,
-    length: u32,
+    width: usize,
+    length: usize,
     positions: Positions,
 }
 
 impl Maze {
-    pub fn new(width: u32, length: u32) -> Maze {
+    pub fn new(width: usize, length: usize) -> Maze {
         let positions: Positions = RefCell::new(Vec::new());
         Maze {
             width: width,
@@ -34,7 +34,7 @@ impl Maze {
             positions: positions,
         }
     }
-    pub fn blank(width: u32, length: u32) -> Maze {
+    pub fn blank(width: usize, length: usize) -> Maze {
         let maze = Maze::new(width, length);
         for row in 0..maze.length() {
             for col in 0..maze.width() {
@@ -52,47 +52,47 @@ impl Maze {
 
         log
     }
-    pub fn total_cells(&self) -> u32 {
+    pub fn total_cells(&self) -> usize {
         self.length * self.width
     }
 
-    pub fn at_upper(&self, row: u32) -> bool {
+    pub fn at_upper(&self, row: usize) -> bool {
         (self.length == row + 1)
     }
 
-    pub fn at_lower(&self, row: u32) -> bool {
+    pub fn at_lower(&self, row: usize) -> bool {
         (1 == row + 1)
     }
 
-    pub fn at_right(&self, col: u32) -> bool {
+    pub fn at_right(&self, col: usize) -> bool {
         (self.width == col + 1)
     }
 
-    pub fn at_left(&self, col: u32) -> bool {
+    pub fn at_left(&self, col: usize) -> bool {
         (1 == col + 1)
     }
 
-    pub fn at_upper_left(&self, col: u32, row: u32) -> bool {
+    pub fn at_upper_left(&self, col: usize, row: usize) -> bool {
         self.at_upper(row) && self.at_left(col)
     }
 
-    pub fn at_upper_right(&self, col: u32, row: u32) -> bool {
+    pub fn at_upper_right(&self, col: usize, row: usize) -> bool {
         self.at_upper(row) && self.at_right(col)
     }
 
-    pub fn at_lower_left(&self, col: u32, row: u32) -> bool {
+    pub fn at_lower_left(&self, col: usize, row: usize) -> bool {
         self.at_lower(row) && self.at_left(col)
     }
 
-    pub fn at_lower_right(&self, col: u32, row: u32) -> bool {
+    pub fn at_lower_right(&self, col: usize, row: usize) -> bool {
         self.at_lower(row) && self.at_right(col)
     }
 
-    pub fn width(&self) -> u32 {
+    pub fn width(&self) -> usize {
         self.width
     }
 
-    pub fn length(&self) -> u32 {
+    pub fn length(&self) -> usize {
         self.length
     }
 
@@ -125,7 +125,7 @@ pub fn coin_flip() -> bool {
     rng.gen_bool(0.5)
 }
 
-pub fn choose_cell(low: u32, high: u32) -> u32 {
+pub fn choose_cell(low: usize, high: usize) -> usize {
     let mut rng = StdRng::from_entropy();
     rng.gen_range(low, high)
 }
