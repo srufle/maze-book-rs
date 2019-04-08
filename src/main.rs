@@ -1,17 +1,9 @@
 #[macro_use]
 extern crate slog;
-extern crate slog_async;
-extern crate slog_term;
-
-extern crate rand;
-
-use slog::Drain;
-use slog::Logger;
 
 mod maze;
 use maze::Grid;
-use maze::maze::Maze;
-
+use maze::Maze;
 #[cfg(not(test))]
 fn main() {
     println!("blank");
@@ -38,14 +30,5 @@ fn main() {
     let mut grid = Grid::new(4, 4);
     grid.init();
     maze::sidewinder::generate_grid(&mut grid);
-    grid.display();    
-}
-
-fn logger() -> Logger {
-    let decorator = slog_term::TermDecorator::new().build();
-    let drain = slog_term::FullFormat::new(decorator).build().fuse();
-    let drain = slog_async::Async::new(drain).build().fuse();
-
-    let log = slog::Logger::root(drain, o!());
-    log
+    grid.display();
 }

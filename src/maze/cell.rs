@@ -1,13 +1,6 @@
-extern crate rand;
 extern crate slog_async;
 extern crate slog_term;
 
-use rand::prelude::*;
-use slog::Drain;
-use slog::Logger;
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::collections::HashSet;
 use std::fmt;
 
 pub type Cells = Vec<Cell>;
