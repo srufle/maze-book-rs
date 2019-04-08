@@ -1,3 +1,4 @@
+use crate::maze::grid::Grid;
 use crate::maze::Direction;
 use crate::maze::Maze;
 use crate::maze::Position;
@@ -51,6 +52,44 @@ pub fn copy_run(maze: &Maze, run: &Vec<Position>) {
             }
 
             maze.push_position(new_pos);
+        }
+    }
+}
+
+pub fn generate_grid(maze: &mut Grid) {
+    for row in 0..maze.length() {
+        // May use visited
+        let mut run: Vec<(usize, usize)> = Vec::new();
+        for col in 0..maze.width() {
+            if maze.at_upper_right(col, row) {
+                run.push((col, row));
+            } else if maze.at_upper(row) {
+                maze.link_east(col, row);
+                run.push((col, row));
+            } else if maze.at_right(col) {
+                maze.link_north(col, row);
+                run.push((col, row));
+            } else {
+                let coin = crate::maze::coin_flip();
+                if coin {
+                    if run.len() == 0 {
+                        maze.link_north(col, row);
+                        run.push((col, row));
+                    } else if run.len() >= 1 {
+                        maze.link_east(col, row);
+                        run.push((col, row));
+                        let low = &run[0];
+                        let high = &run[run.len() - 1];
+                        let run_index: usize = crate::maze::choose_cell(low.0, high.0) as usize;
+                        maze.link_north(run_index, row);
+                    }
+
+                    run.clear();
+                } else {
+                    maze.link_east(col, row);
+                    run.push((col, row));
+                }
+            }
         }
     }
 }

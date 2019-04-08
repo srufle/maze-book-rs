@@ -33,6 +33,12 @@ fn main() {
     let maze_sw = Maze::new(4, 4);
     maze::sidewinder::generate(&maze_sw);
     maze_sw.display();
+
+    println!("sidewinder grid");
+    let mut grid = Grid::new(4, 4);
+    grid.init();
+    maze::sidewinder::generate_grid(&mut grid);
+    grid.display();    
 }
 
 fn logger() -> Logger {
