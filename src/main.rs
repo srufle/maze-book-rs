@@ -31,4 +31,6 @@ fn main() {
     grid.init();
     maze::sidewinder::generate_grid(&mut grid);
     grid.display();
+    grid.render_ascii();
+
 }

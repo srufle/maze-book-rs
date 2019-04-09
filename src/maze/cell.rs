@@ -9,10 +9,10 @@ pub type Cells = Vec<Cell>;
 pub struct Cell {
     col: usize,
     row: usize,
-    north: bool,
-    east: bool,
-    south: bool,
-    west: bool,
+    pub north: bool,
+    pub east: bool,
+    pub south: bool,
+    pub west: bool,
 }
 
 impl Cell {

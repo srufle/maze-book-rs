@@ -1,10 +1,10 @@
 extern crate slog_async;
 extern crate slog_term;
 
-use slog::Drain;
-use slog::Logger;
 use super::cell::Cell;
 use super::cell::Cells;
+use slog::Drain;
+use slog::Logger;
 use std::collections::HashSet;
 
 pub struct Grid {
@@ -46,6 +46,43 @@ impl Grid {
             }
             col += 1;
         }
+    }
+    pub fn render_ascii(&self) {
+        let mut output = "".to_string();
+        let mut col = 1;
+        let mut cells = self.cells();
+        debug!(Grid::logger(), "{:?}", cells);
+        cells.sort_by_key(|c| self.cells_len() - c.row());
+        debug!(Grid::logger(), "{:?}", cells);
+
+        output = format!("{}{}\n", "+", "---+".repeat(self.width()));
+
+        let mut top = "|".to_string();
+        let mut bottom = "+".to_string();
+
+        for cell in cells {
+            let body = "   ".to_string();
+            let east_boundary = match cell.east {
+                true => " ".to_string(),
+                false => "|".to_string(),
+            };
+            top.push_str(&format!("{}{}", body, east_boundary));
+
+            let south_boundary = match cell.south {
+                true => "   ",
+                false => "---",
+            };
+            let corner = "+";
+            bottom.push_str(&format!("{}{}", south_boundary, corner));
+            if col % self.width() == 0 {
+                output.push_str(&format!("{}\n", top));
+                output.push_str(&format!("{}\n", bottom));
+                top = "|".to_string();
+                bottom = "+".to_string();
+            }
+            col += 1;
+        }
+        print!("{}", output);
     }
 
     pub fn cell_at(&self, col: usize, row: usize) -> Option<Cell> {
@@ -148,7 +185,7 @@ impl Grid {
         self.length
     }
 
-        fn logger() -> Logger {
+    fn logger() -> Logger {
         let decorator = slog_term::TermDecorator::new().build();
         let drain = slog_term::FullFormat::new(decorator).build().fuse();
         let drain = slog_async::Async::new(drain).build().fuse();
