@@ -1,3 +1,5 @@
+extern crate image;
+extern crate imageproc;
 extern crate slog_async;
 extern crate slog_term;
 
@@ -6,6 +8,11 @@ use super::cell::Cells;
 use slog::Drain;
 use slog::Logger;
 use std::collections::HashSet;
+use std::path::Path;
+
+use self::image::{Rgb, RgbImage};
+use self::imageproc::rect::Rect;
+use self::imageproc::drawing;
 
 pub struct Grid {
     width: usize,
@@ -47,6 +54,7 @@ impl Grid {
             col += 1;
         }
     }
+
     pub fn render_ascii(&self) {
         let mut output = "".to_string();
         let mut col = 1;
@@ -83,6 +91,115 @@ impl Grid {
             col += 1;
         }
         print!("{}", output);
+    }
+
+
+    pub fn render_png(&self, name: &String) {
+    let filename = Path::new(&name);
+
+        let img_width = 800u32;
+        let img_height = 800u32;
+
+        let grid_size = if self.width > std::i32::MAX as usize {
+            None
+        } else {
+            Some(self.width as i32)
+        };
+        let cell_size = 700i32 / grid_size.unwrap();
+        let left_margin = 50i32;
+        let top_margin = 50i32;
+
+        let black = Rgb([0u8, 0u8, 0u8]);
+        let red = Rgb([255u8, 0u8, 0u8]);
+        let green = Rgb([0u8, 255u8, 0u8]);
+        let blue = Rgb([0u8, 0u8, 255u8]);
+        let white = Rgb([255u8, 255u8, 255u8]);
+
+        let mut image = RgbImage::from_pixel(img_width, img_height, white);
+
+        let mut cells = self.cells();
+        cells.sort_by_key(|c| self.cells_len() - c.row());
+
+        for cell in &cells {
+            if cell.north == false {
+                let x = left_margin + (cell.col() as i32 * cell_size);
+                let y = top_margin + (cell.row() as i32 * cell_size);
+                let width = cell_size as u32;
+                let height = 2u32;
+                debug!(Grid::logger(), "x={:?}, y={:?}, width={:?}, height={:?}, black, {}, north==false", x, y, width, height, cell.to_string());
+                drawing::draw_filled_rect_mut(&mut image,
+                                              Rect::at(x, y).of_size(width, height),
+                                              black);
+            }
+            if cell.south == false {
+                let x = left_margin + (cell.col() as i32 * cell_size);
+                let y = top_margin + (cell.row() as i32 * cell_size) + cell_size;
+                let width = cell_size as u32;
+                let height = 2u32;
+                debug!(Grid::logger(), "x={:?}, y={:?}, width={:?}, height={:?}, red, {}, south==false", x, y, width, height,  cell.to_string());
+                drawing::draw_filled_rect_mut(&mut image,
+                                              Rect::at(x, y).of_size(width, height),
+                                              red);
+            }
+            if cell.east == false {
+                let x = left_margin + (cell.col() as i32 * cell_size) + cell_size;
+                let y = top_margin + (cell.row() as i32 * cell_size);
+                let width = 2u32;
+                let height = cell_size as u32;
+                debug!(Grid::logger(), "x={:?}, y={:?}, width={:?}, height={:?}, green, {}, east==false", x, y, width, height,  cell.to_string());
+                drawing::draw_filled_rect_mut(&mut image,
+                                              Rect::at(x, y).of_size(width, height),
+                                              green);
+            }
+            if cell.west == false {
+                let x = left_margin + (cell.col() as i32 * cell_size);
+                let y = top_margin + (cell.row() as i32 * cell_size);
+                let width = 2u32;
+                let height = cell_size as u32;
+                debug!(Grid::logger(), "x={:?}, y={:?}, width={:?}, height={:?}, blue, {}, west==false", x, y, width, height,  cell.to_string());
+                drawing::draw_filled_rect_mut(&mut image,
+                                              Rect::at(x, y).of_size(width, height),
+                                              blue);
+            }
+        }
+
+
+        image.save(filename).unwrap();        
+        // let mut output = "".to_string();
+        // let mut col = 1;
+        // let mut cells = self.cells();
+        // debug!(Grid::logger(), "{:?}", cells);
+        // cells.sort_by_key(|c| self.cells_len() - c.row());
+        // debug!(Grid::logger(), "{:?}", cells);
+
+        // output = format!("{}{}\n", "+", "---+".repeat(self.width()));
+
+        // let mut top = "|".to_string();
+        // let mut bottom = "+".to_string();
+
+        // for cell in cells {
+        //     let body = "   ".to_string();
+        //     let east_boundary = match cell.east {
+        //         true => " ".to_string(),
+        //         false => "|".to_string(),
+        //     };
+        //     top.push_str(&format!("{}{}", body, east_boundary));
+
+        //     let south_boundary = match cell.south {
+        //         true => "   ",
+        //         false => "---",
+        //     };
+        //     let corner = "+";
+        //     bottom.push_str(&format!("{}{}", south_boundary, corner));
+        //     if col % self.width() == 0 {
+        //         output.push_str(&format!("{}\n", top));
+        //         output.push_str(&format!("{}\n", bottom));
+        //         top = "|".to_string();
+        //         bottom = "+".to_string();
+        //     }
+        //     col += 1;
+        // }
+        // print!("{}", output);
     }
 
     pub fn cell_at(&self, col: usize, row: usize) -> Option<Cell> {

@@ -6,7 +6,7 @@ use maze::Grid;
 use maze::Maze;
 #[cfg(not(test))]
 fn main() {
-    let size = 4;
+    let size = 3;
     println!("blank");
     let maze = Maze::blank(size, size);
     maze.display();
@@ -17,6 +17,7 @@ fn main() {
     maze::binary_tree::generate_grid(&mut grid);
     grid.display();
     grid.render_ascii();
+    grid.render_png(&"./binary_tree_grid.png".to_string());
 
     println!("binary_tree");
     let maze = Maze::new(size, size);
