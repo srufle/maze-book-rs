@@ -45,3 +45,29 @@ pub fn generate_grid(maze: &mut Grid) {
         }
     }
 }
+
+pub fn generate_fixed_grid(maze: &mut Grid) {
+
+// 00, 02, (E)  |01, 02, (E,W)  |02, 02, (S,W)|
+// 00, 01, (E,S)|01, 01, (E,S,W)|02, 01, (N,S,W)|
+// 00, 00, (N)  |01, 00, (N)    |02, 00, (N)|
+
+// +---+---+---+
+// |           |
+// +---+---+   +
+// |           |
+// +   +   +   +
+// |   |   |   |
+// +---+---+---+
+maze.link_north(0, 0);
+maze.link_north(1, 0);
+maze.link_north(2, 0);
+
+maze.link_east(0, 1);
+maze.link_east(1, 1);
+maze.link_north(2, 1);
+
+maze.link_east(0, 2);
+maze.link_east(1, 2);
+
+}
