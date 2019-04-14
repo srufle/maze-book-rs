@@ -106,13 +106,13 @@ impl Grid {
         };
         let cell_size = 700i32 / grid_size.unwrap();
         let left_margin = 50i32;
-        let top_margin = 50i32;
         let bottom_margin = 50i32 + (grid_size.unwrap() * cell_size);
 
         let black = Rgb([0u8, 0u8, 0u8]);
-        let red = Rgb([255u8, 0u8, 0u8]);
-        let green = Rgb([0u8, 255u8, 0u8]);
-        let blue = Rgb([0u8, 0u8, 255u8]);
+        // Colors werere used for debugging drawing
+        // let red = Rgb([255u8, 0u8, 0u8]);
+        // let green = Rgb([0u8, 255u8, 0u8]);
+        // let blue = Rgb([0u8, 0u8, 255u8]);
         let white = Rgb([255u8, 255u8, 255u8]);
 
         let mut image = RgbImage::from_pixel(img_width, img_height, white);
@@ -157,7 +157,7 @@ impl Grid {
                 drawing::draw_filled_rect_mut(
                     &mut image,
                     Rect::at(x, y).of_size(width, height),
-                    red,
+                    black,
                 );
             }
             if cell.east == false {
@@ -177,7 +177,7 @@ impl Grid {
                 drawing::draw_filled_rect_mut(
                     &mut image,
                     Rect::at(x, y).of_size(width, height),
-                    green,
+                    black,
                 );
             }
             if cell.west == false {
@@ -197,47 +197,12 @@ impl Grid {
                 drawing::draw_filled_rect_mut(
                     &mut image,
                     Rect::at(x, y).of_size(width, height),
-                    blue,
+                    black,
                 );
             }
         }
 
         image.save(filename).unwrap();
-        // let mut output = "".to_string();
-        // let mut col = 1;
-        // let mut cells = self.cells();
-        // debug!(Grid::logger(), "{:?}", cells);
-        // cells.sort_by_key(|c| self.cells_len() - c.row());
-        // debug!(Grid::logger(), "{:?}", cells);
-
-        // output = format!("{}{}\n", "+", "---+".repeat(self.width()));
-
-        // let mut top = "|".to_string();
-        // let mut bottom = "+".to_string();
-
-        // for cell in cells {
-        //     let body = "   ".to_string();
-        //     let east_boundary = match cell.east {
-        //         true => " ".to_string(),
-        //         false => "|".to_string(),
-        //     };
-        //     top.push_str(&format!("{}{}", body, east_boundary));
-
-        //     let south_boundary = match cell.south {
-        //         true => "   ",
-        //         false => "---",
-        //     };
-        //     let corner = "+";
-        //     bottom.push_str(&format!("{}{}", south_boundary, corner));
-        //     if col % self.width() == 0 {
-        //         output.push_str(&format!("{}\n", top));
-        //         output.push_str(&format!("{}\n", bottom));
-        //         top = "|".to_string();
-        //         bottom = "+".to_string();
-        //     }
-        //     col += 1;
-        // }
-        // print!("{}", output);
     }
 
     pub fn cell_at(&self, col: usize, row: usize) -> Option<Cell> {
