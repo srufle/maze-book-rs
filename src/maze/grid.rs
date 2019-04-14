@@ -107,6 +107,7 @@ impl Grid {
         let cell_size = 700i32 / grid_size.unwrap();
         let left_margin = 50i32;
         let top_margin = 50i32;
+        let bottom_margin = 50i32 + (grid_size.unwrap() * cell_size);
 
         let black = Rgb([0u8, 0u8, 0u8]);
         let red = Rgb([255u8, 0u8, 0u8]);
@@ -117,12 +118,11 @@ impl Grid {
         let mut image = RgbImage::from_pixel(img_width, img_height, white);
 
         let mut cells = self.cells();
-        cells.sort_by_key(|c| self.cells_len() - c.row());
 
         for cell in &cells {
             if cell.north == false {
                 let x = left_margin + (cell.col() as i32 * cell_size);
-                let y = top_margin + (cell.row() as i32 * cell_size);
+                let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
                 let width = cell_size as u32;
                 let height = 2u32;
                 debug!(
@@ -142,7 +142,7 @@ impl Grid {
             }
             if cell.south == false {
                 let x = left_margin + (cell.col() as i32 * cell_size);
-                let y = top_margin + (cell.row() as i32 * cell_size) + cell_size;
+                let y = bottom_margin - (cell.row() as i32 * cell_size);
                 let width = cell_size as u32;
                 let height = 2u32;
                 debug!(
@@ -162,7 +162,7 @@ impl Grid {
             }
             if cell.east == false {
                 let x = left_margin + (cell.col() as i32 * cell_size) + cell_size;
-                let y = top_margin + (cell.row() as i32 * cell_size);
+                let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
                 let width = 2u32;
                 let height = cell_size as u32;
                 debug!(
@@ -182,7 +182,7 @@ impl Grid {
             }
             if cell.west == false {
                 let x = left_margin + (cell.col() as i32 * cell_size);
-                let y = top_margin + (cell.row() as i32 * cell_size);
+                let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
                 let width = 2u32;
                 let height = cell_size as u32;
                 debug!(
