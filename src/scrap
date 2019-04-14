@@ -98,3 +98,47 @@ Apr 09 21:52:46.18 DEBG x=283, y=50, width=2, height=233, blue,   01, 00, (E)   
 // Bottom Right
 Apr 09 21:52:46.19 DEBG x=516, y=283, width=233, height=2, red,   02, 00, (N,W)  , south==false
 Apr 09 21:52:46.20 DEBG x=749, y=50, width=2, height=233, green,  02, 00, (N,W)  , east==false
+
+00, 02, (E)  |01, 02, (E,W)  |02, 02, (S,W)|
+00, 01, (E,S)|01, 01, (E,S,W)|02, 01, (N,S,W)|
+00, 00, (N)  |01, 00, (N)    |02, 00, (N)|
+
++---+---+---+
+|           |
++---+---+   +
+|           |
++   +   +   +
+|   |   |   |
++---+---+---+
+Top Left
+- Apr 13 22:44:27.494 DEBG x=50, y=283, width=233, height=2, red, 00, 00, (N), south==false
++ Apr 13 22:44:27.494 DEBG x=50, y=749, width=233, height=2, red, 00, 00, (N), south==false
+
+Apr 13 22:45:08.954 DEBG x=283, y=50, width=2, height=233, green, 00, 00, (N), east==false
+Apr 13 22:45:46.809 DEBG x=50, y=50, width=2, height=233, blue, 00, 00, (N), west==false
+
+
+Apr 13 22:48:29.388 DEBG x=283, y=283, width=233, height=2, red, 01, 00, (N), south==false
+Apr 13 22:48:29.388 DEBG x=516, y=50, width=2, height=233, green, 01, 00, (N), east==false
+Apr 13 22:48:29.389 DEBG x=283, y=50, width=2, height=233, blue, 01, 00, (N), west==false
+
+Apr 13 22:48:29.389 DEBG x=516, y=283, width=233, height=2, red, 02, 00, (N), south==false
+Apr 13 22:48:29.390 DEBG x=749, y=50, width=2, height=233, green, 02, 00, (N), east==false
+Apr 13 22:48:29.401 DEBG x=516, y=50, width=2, height=233, blue, 02, 00, (N), west==false
+
+Apr 13 22:48:29.402 DEBG x=50, y=283, width=233, height=2, black, 00, 01, (E,S), north==false
+Apr 13 22:48:29.402 DEBG x=50, y=283, width=2, height=233, blue, 00, 01, (E,S), west==false
+
+Apr 13 22:48:29.403 DEBG x=283, y=283, width=233, height=2, black, 01, 01, (E,S,W), north==false
+
+Apr 13 22:48:29.403 DEBG x=749, y=283, width=2, height=233, green, 02, 01, (N,S,W), east==false
+
+Apr 13 22:48:29.403 DEBG x=50, y=516, width=233, height=2, black, 00, 02, (E), north==false
+Apr 13 22:48:29.404 DEBG x=50, y=749, width=233, height=2, red, 00, 02, (E), south==false
+Apr 13 22:48:29.404 DEBG x=50, y=516, width=2, height=233, blue, 00, 02, (E), west==false
+
+Apr 13 22:48:29.406 DEBG x=283, y=516, width=233, height=2, black, 01, 02, (E,W), north==false
+Apr 13 22:48:29.407 DEBG x=283, y=749, width=233, height=2, red, 01, 02, (E,W), south==false
+
+Apr 13 22:48:29.407 DEBG x=516, y=516, width=233, height=2, black, 02, 02, (S,W), north==false
+Apr 13 22:48:29.407 DEBG x=749, y=516, width=2, height=233, green, 02, 02, (S,W), east==false
