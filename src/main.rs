@@ -15,8 +15,10 @@ fn main() {
     let mut grid = Grid::new(size, size);
     grid.init();
     maze::binary_tree::generate_grid(&mut grid);
+    // maze::binary_tree::generate_fixed_grid(&mut grid);
     grid.display();
     grid.render_ascii();
+    grid.render_png(&"./binary_tree_grid.png".to_string());
 
     println!("binary_tree");
     let maze = Maze::new(size, size);

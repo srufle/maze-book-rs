@@ -1,0 +1,144 @@
+[
+ MazePosition { col: 0, row: 3, direction: East }, 
+ MazePosition { col: 1, row: 3, direction: East },
+ MazePosition { col: 2, row: 3, direction: East }, 
+ MazePosition { col: 3, row: 3, direction: None },
+
+ MazePosition { col: 0, row: 2, direction: North },
+ MazePosition { col: 1, row: 2, direction: East },
+ MazePosition { col: 2, row: 2, direction: East },
+ MazePosition { col: 3, row: 2, direction: North },
+ 
+ MazePosition { col: 0, row: 1, direction: East },
+ MazePosition { col: 1, row: 1, direction: East },
+ MazePosition { col: 2, row: 1, direction: East },
+ MazePosition { col: 3, row: 1, direction: North },
+ 
+ MazePosition { col: 0, row: 0, direction: East },
+ MazePosition { col: 1, row: 0, direction: North },
+ MazePosition { col: 2, row: 0, direction: East },
+ MazePosition { col: 3, row: 0, direction: North }
+]
+
+00, 03, (E)|01, 03, (E)|02, 03, (E)|03, 03, (0)|
+00, 02, (E,N)|01, 02, (E)|_________|03, 02, (N)
+00, 01, (N)|01, 01, (N)|02, 01, (E)|03, 01, (N)|
+00, 00, (E,N)|_________|02, 00, (N)|03, 00, (N)|
+
+srufle@rufledesk2018:~/code/github.com/maze-book-rs$ 
+
+Maze { width: 4, length: 4,
+positions: RefCell { value: [
+    Position { col: 0, row: 0, directions: RefCell { value: [East, North] } },
+    Position { col: 2, row: 0, directions: RefCell { value: [East] } },
+    Position { col: 3, row: 0, directions: RefCell { value: [North] } }] } }
+
+Maze { width: 4, length: 4, 
+positions: RefCell { value: [
+    Position { col: 0, row: 0, directions: RefCell { value: [East, North] } },
+    Position { col: 2, row: 0, directions: RefCell { value: [East] } },
+    Position { col: 3, row: 0, directions: RefCell { value: [North] } }] } }
+
+Maze { width: 4, length: 4, 
+positions: RefCell { value: [
+    Position { col: 0, row: 0, directions: RefCell { value: [East, North] } }, 
+    Position { col: 2, row: 0, directions: RefCell { value: [East] } }, 
+    Position { col: 3, row: 0, directions: RefCell { value: [North] } },
+    
+    Position { col: 0, row: 1, directions: RefCell { value: [East] } },
+    Position { col: 1, row: 1, directions: RefCell { value: [East] } },
+    Position { col: 2, row: 1, directions: RefCell { value: [East] } },
+    Position { col: 3, row: 1, directions: RefCell { value: [North] } }] } }
+
+
+00, 02, (E)  |01, 02, (E,S,W)|02, 02, (S,W)|
+00, 01, (E,S)|01, 01, (N,W)  |02, 01, (N,S)|
+00, 00, (N)  |01, 00, (E)    |02, 00, (N,W)|
++---+---+---+
+|           |
++---+   +   +
+|       |   |
++   +---+   +
+|   |       |
++---+---+---+
+// Top left
+Apr 09 21:52:46.01 DEBG x=50, y=516, width=233, height=2, black,  00, 02, (E)    , north==false
+Apr 09 21:52:46.02 DEBG x=50, y=749, width=233, height=2, red,    00, 02, (E)    , south==false
+Apr 09 21:52:46.03 DEBG x=50, y=516, width=2, height=233, blue,   00, 02, (E)    , west==false
+
+// Top Middle
+Apr 09 21:52:46.04 DEBG x=283, y=516, width=233, height=2, black, 01, 02, (E,S,W), north==false
+
+// Top Right
+Apr 09 21:52:46.05 DEBG x=516, y=516, width=233, height=2, black, 02, 02, (S,W)  , north==false
+Apr 09 21:52:46.06 DEBG x=749, y=516, width=2, height=233, green, 02, 02, (S,W)  , east==false
+
+// Middle Left
+Apr 09 21:52:46.07 DEBG x=50, y=283, width=233, height=2, black,  00, 01, (E,S)  , north==false
+Apr 09 21:52:46.08 DEBG x=50, y=283, width=2, height=233, blue,   00, 01, (E,S)  , west==false
+
+// Middle Middle
+Apr 09 21:52:46.09 DEBG x=283, y=516, width=233, height=2, red,   01, 01, (N,W)  , south==false
+Apr 09 21:52:46.10 DEBG x=516, y=283, width=2, height=233, green, 01, 01, (N,W)  , east==false
+
+// Middle Right
+Apr 09 21:52:46.11 DEBG x=749, y=283, width=2, height=233, green, 02, 01, (N,S)  , east==false
+Apr 09 21:52:46.12 DEBG x=516, y=283, width=2, height=233, blue,  02, 01, (N,S)  , west==false
+
+// Bottom Left
+Apr 09 21:52:46.13 DEBG x=50, y=283, width=233, height=2, red,    00, 00, (N)    , south==false
+Apr 09 21:52:46.14 DEBG x=283, y=50, width=2, height=233, green,  00, 00, (N)    , east==false
+Apr 09 21:52:46.15 DEBG x=50, y=50, width=2, height=233, blue,    00, 00, (N)    , west==false
+
+// Bottom Middle
+Apr 09 21:52:46.16 DEBG x=283, y=50, width=233, height=2, black,  01, 00, (E)    , north==false
+Apr 09 21:52:46.17 DEBG x=283, y=283, width=233, height=2, red,   01, 00, (E)    , south==false
+Apr 09 21:52:46.18 DEBG x=283, y=50, width=2, height=233, blue,   01, 00, (E)    , west==false
+
+// Bottom Right
+Apr 09 21:52:46.19 DEBG x=516, y=283, width=233, height=2, red,   02, 00, (N,W)  , south==false
+Apr 09 21:52:46.20 DEBG x=749, y=50, width=2, height=233, green,  02, 00, (N,W)  , east==false
+
+00, 02, (E)  |01, 02, (E,W)  |02, 02, (S,W)|
+00, 01, (E,S)|01, 01, (E,S,W)|02, 01, (N,S,W)|
+00, 00, (N)  |01, 00, (N)    |02, 00, (N)|
+
++---+---+---+
+|           |
++---+---+   +
+|           |
++   +   +   +
+|   |   |   |
++---+---+---+
+Top Left
+- Apr 13 22:44:27.494 DEBG x=50, y=283, width=233, height=2, red, 00, 00, (N), south==false
++ Apr 13 22:44:27.494 DEBG x=50, y=749, width=233, height=2, red, 00, 00, (N), south==false
+
+Apr 13 22:45:08.954 DEBG x=283, y=50, width=2, height=233, green, 00, 00, (N), east==false
+Apr 13 22:45:46.809 DEBG x=50, y=50, width=2, height=233, blue, 00, 00, (N), west==false
+
+
+Apr 13 22:48:29.388 DEBG x=283, y=283, width=233, height=2, red, 01, 00, (N), south==false
+Apr 13 22:48:29.388 DEBG x=516, y=50, width=2, height=233, green, 01, 00, (N), east==false
+Apr 13 22:48:29.389 DEBG x=283, y=50, width=2, height=233, blue, 01, 00, (N), west==false
+
+Apr 13 22:48:29.389 DEBG x=516, y=283, width=233, height=2, red, 02, 00, (N), south==false
+Apr 13 22:48:29.390 DEBG x=749, y=50, width=2, height=233, green, 02, 00, (N), east==false
+Apr 13 22:48:29.401 DEBG x=516, y=50, width=2, height=233, blue, 02, 00, (N), west==false
+
+Apr 13 22:48:29.402 DEBG x=50, y=283, width=233, height=2, black, 00, 01, (E,S), north==false
+Apr 13 22:48:29.402 DEBG x=50, y=283, width=2, height=233, blue, 00, 01, (E,S), west==false
+
+Apr 13 22:48:29.403 DEBG x=283, y=283, width=233, height=2, black, 01, 01, (E,S,W), north==false
+
+Apr 13 22:48:29.403 DEBG x=749, y=283, width=2, height=233, green, 02, 01, (N,S,W), east==false
+
+Apr 13 22:48:29.403 DEBG x=50, y=516, width=233, height=2, black, 00, 02, (E), north==false
+Apr 13 22:48:29.404 DEBG x=50, y=749, width=233, height=2, red, 00, 02, (E), south==false
+Apr 13 22:48:29.404 DEBG x=50, y=516, width=2, height=233, blue, 00, 02, (E), west==false
+
+Apr 13 22:48:29.406 DEBG x=283, y=516, width=233, height=2, black, 01, 02, (E,W), north==false
+Apr 13 22:48:29.407 DEBG x=283, y=749, width=233, height=2, red, 01, 02, (E,W), south==false
+
+Apr 13 22:48:29.407 DEBG x=516, y=516, width=233, height=2, black, 02, 02, (S,W), north==false
+Apr 13 22:48:29.407 DEBG x=749, y=516, width=2, height=233, green, 02, 02, (S,W), east==false

@@ -6,7 +6,9 @@ edition = "2018"
 
 [dependencies]
 rand = "0.6.5"
+image = "0.21.0"
+imageproc = "0.18.0"
 
-slog = {version = "2.4", features = ["max_level_trace", "release_max_level_warn"]}
+slog = {version = "2.4", features = ["max_level_info", "release_max_level_warn"]}
 slog-term = "2.4"
 slog-async = "2.3"
