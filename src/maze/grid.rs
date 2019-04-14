@@ -11,8 +11,8 @@ use std::collections::HashSet;
 use std::path::Path;
 
 use self::image::{Rgb, RgbImage};
-use self::imageproc::rect::Rect;
 use self::imageproc::drawing;
+use self::imageproc::rect::Rect;
 
 pub struct Grid {
     width: usize,
@@ -93,9 +93,8 @@ impl Grid {
         print!("{}", output);
     }
 
-
     pub fn render_png(&self, name: &String) {
-    let filename = Path::new(&name);
+        let filename = Path::new(&name);
 
         let img_width = 800u32;
         let img_height = 800u32;
@@ -126,45 +125,84 @@ impl Grid {
                 let y = top_margin + (cell.row() as i32 * cell_size);
                 let width = cell_size as u32;
                 let height = 2u32;
-                debug!(Grid::logger(), "x={:?}, y={:?}, width={:?}, height={:?}, black, {}, north==false", x, y, width, height, cell.to_string());
-                drawing::draw_filled_rect_mut(&mut image,
-                                              Rect::at(x, y).of_size(width, height),
-                                              black);
+                debug!(
+                    Grid::logger(),
+                    "x={:?}, y={:?}, width={:?}, height={:?}, black, {}, north==false",
+                    x,
+                    y,
+                    width,
+                    height,
+                    cell.to_string()
+                );
+                drawing::draw_filled_rect_mut(
+                    &mut image,
+                    Rect::at(x, y).of_size(width, height),
+                    black,
+                );
             }
             if cell.south == false {
                 let x = left_margin + (cell.col() as i32 * cell_size);
                 let y = top_margin + (cell.row() as i32 * cell_size) + cell_size;
                 let width = cell_size as u32;
                 let height = 2u32;
-                debug!(Grid::logger(), "x={:?}, y={:?}, width={:?}, height={:?}, red, {}, south==false", x, y, width, height,  cell.to_string());
-                drawing::draw_filled_rect_mut(&mut image,
-                                              Rect::at(x, y).of_size(width, height),
-                                              red);
+                debug!(
+                    Grid::logger(),
+                    "x={:?}, y={:?}, width={:?}, height={:?}, red, {}, south==false",
+                    x,
+                    y,
+                    width,
+                    height,
+                    cell.to_string()
+                );
+                drawing::draw_filled_rect_mut(
+                    &mut image,
+                    Rect::at(x, y).of_size(width, height),
+                    red,
+                );
             }
             if cell.east == false {
                 let x = left_margin + (cell.col() as i32 * cell_size) + cell_size;
                 let y = top_margin + (cell.row() as i32 * cell_size);
                 let width = 2u32;
                 let height = cell_size as u32;
-                debug!(Grid::logger(), "x={:?}, y={:?}, width={:?}, height={:?}, green, {}, east==false", x, y, width, height,  cell.to_string());
-                drawing::draw_filled_rect_mut(&mut image,
-                                              Rect::at(x, y).of_size(width, height),
-                                              green);
+                debug!(
+                    Grid::logger(),
+                    "x={:?}, y={:?}, width={:?}, height={:?}, green, {}, east==false",
+                    x,
+                    y,
+                    width,
+                    height,
+                    cell.to_string()
+                );
+                drawing::draw_filled_rect_mut(
+                    &mut image,
+                    Rect::at(x, y).of_size(width, height),
+                    green,
+                );
             }
             if cell.west == false {
                 let x = left_margin + (cell.col() as i32 * cell_size);
                 let y = top_margin + (cell.row() as i32 * cell_size);
                 let width = 2u32;
                 let height = cell_size as u32;
-                debug!(Grid::logger(), "x={:?}, y={:?}, width={:?}, height={:?}, blue, {}, west==false", x, y, width, height,  cell.to_string());
-                drawing::draw_filled_rect_mut(&mut image,
-                                              Rect::at(x, y).of_size(width, height),
-                                              blue);
+                debug!(
+                    Grid::logger(),
+                    "x={:?}, y={:?}, width={:?}, height={:?}, blue, {}, west==false",
+                    x,
+                    y,
+                    width,
+                    height,
+                    cell.to_string()
+                );
+                drawing::draw_filled_rect_mut(
+                    &mut image,
+                    Rect::at(x, y).of_size(width, height),
+                    blue,
+                );
             }
         }
 
-
-        image.save(filename).unwrap();        
+        image.save(filename).unwrap();
         // let mut output = "".to_string();
         // let mut col = 1;
         // let mut cells = self.cells();
