@@ -55,12 +55,12 @@ impl Grid {
         self.visit_pos(entrance);
     }
 
-    pub fn visit_pos(&mut self, cell: Pos2d) -> bool {
-        self.visited.insert(cell)
+    pub fn visit_pos(&mut self, pos: Pos2d) -> bool {
+        self.visited.insert(pos)
     }
 
-    pub fn is_cell_visited(&self, cell: Pos2d) -> bool {
-        self.visited.contains(&cell)
+    pub fn is_cell_visited(&self, pos: Pos2d) -> bool {
+        self.visited.contains(&pos)
     }
 
     pub fn display(&self) {
@@ -256,12 +256,12 @@ impl Grid {
         self.distances.keys()
     }
 
-    pub fn distance_of_cell(&self, cell: Pos2d) -> Option<&usize> {
-        self.distances.get(&cell)
+    pub fn distance_of_cell(&self, pos: Pos2d) -> Option<&usize> {
+        self.distances.get(&pos)
     }
 
-    pub fn insert_distance(&mut self, cell: Pos2d, distance: usize) -> Option<usize> {
-        self.distances.insert(cell, distance)
+    pub fn insert_distance(&mut self, pos: Pos2d, distance: usize) -> Option<usize> {
+        self.distances.insert(pos, distance)
     }
 
     fn do_calculate_distances(&mut self, mut frontier: Vec<Pos2d>) {
@@ -270,46 +270,46 @@ impl Grid {
         if frontier.len() > 0 {
             for c in frontier.iter() {
                 let cell = self.cell_at(c.0, c.1).unwrap();
-                let cur_tuple = (c.0, c.1);
+                let cur_pos = (c.0, c.1);
 
-                let cur_dist = match self.distance_of_cell(cur_tuple) {
+                let cur_dist = match self.distance_of_cell(cur_pos) {
                     Some(&dist) => dist,
                     None => 0,
                 };
                 debug!(
                     Grid::logger(),
-                    "cur_tuple = {:?}, cur_dist={}", cur_tuple, cur_dist
+                    "cur_pos = {:?}, cur_dist={}", cur_pos, cur_dist
                 );
                 if cell.north {
-                    let next_cell = self.next_north(cell.col(), cell.row());
-                    if !self.is_cell_visited(next_cell) {
-                        self.insert_distance(next_cell, cur_dist + 1);
-                        new_frontier.push(next_cell);
-                        self.visit_pos(cur_tuple);
+                    let next_pos = self.next_north(cell.col(), cell.row());
+                    if !self.is_cell_visited(next_pos) {
+                        self.insert_distance(next_pos, cur_dist + 1);
+                        new_frontier.push(next_pos);
+                        self.visit_pos(cur_pos);
                     }
                 }
                 if cell.east {
-                    let next_cell = self.next_east(cell.col(), cell.row());
-                    if !self.is_cell_visited(next_cell) {
-                        self.insert_distance(next_cell, cur_dist + 1);
-                        new_frontier.push(next_cell);
-                        self.visit_pos(cur_tuple);
+                    let next_pos = self.next_east(cell.col(), cell.row());
+                    if !self.is_cell_visited(next_pos) {
+                        self.insert_distance(next_pos, cur_dist + 1);
+                        new_frontier.push(next_pos);
+                        self.visit_pos(cur_pos);
                     }
                 }
                 if cell.south {
-                    let next_cell = self.next_south(cell.col(), cell.row());
-                    if !self.is_cell_visited(next_cell) {
-                        self.insert_distance(next_cell, cur_dist + 1);
-                        new_frontier.push(next_cell);
-                        self.visit_pos(cur_tuple);
+                    let next_pos = self.next_south(cell.col(), cell.row());
+                    if !self.is_cell_visited(next_pos) {
+                        self.insert_distance(next_pos, cur_dist + 1);
+                        new_frontier.push(next_pos);
+                        self.visit_pos(cur_pos);
                     }
                 }
                 if cell.west {
-                    let next_cell = self.next_west(cell.col(), cell.row());
-                    if !self.is_cell_visited(next_cell) {
-                        self.insert_distance(next_cell, cur_dist + 1);
-                        new_frontier.push(next_cell);
-                        self.visit_pos(cur_tuple);
+                    let next_pos = self.next_west(cell.col(), cell.row());
+                    if !self.is_cell_visited(next_pos) {
+                        self.insert_distance(next_pos, cur_dist + 1);
+                        new_frontier.push(next_pos);
+                        self.visit_pos(cur_pos);
                     }
                 }
             }
