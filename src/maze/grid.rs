@@ -14,8 +14,10 @@ use std::path::Path;
 use self::image::{Rgb, RgbImage};
 use self::imageproc::drawing;
 use self::imageproc::rect::Rect;
+pub type Pos2d = (usize, usize);
+pub type Distance = HashMap<Pos2d, usize>;
+pub type CellTuples = Vec<Pos2d>;
 
-pub type Distance = HashMap<(usize, usize), usize>;
 pub struct Distances {
     cells: Distance,
 }
@@ -29,20 +31,20 @@ impl Distances {
         ret
     }
 
-    pub fn cell_keys(&self) -> Keys<(usize, usize), usize> {
+    pub fn cell_keys(&self) -> Keys<Pos2d, usize> {
         self.cells.keys()
     }
 
-    pub fn distance_of_cell(&self, cell: (usize, usize)) -> Option<&usize> {
+    pub fn distance_of_cell(&self, cell: Pos2d) -> Option<&usize> {
         self.cells.get(&cell)
     }
 
-    pub fn insert_distance(&mut self, cell: (usize, usize), distance: usize) -> Option<usize> {
+    pub fn insert_distance(&mut self, cell: Pos2d, distance: usize) -> Option<usize> {
         self.cells.insert(cell, distance)
     }
 
-    pub fn calculate_distances(&mut self, maze: &mut Grid, mut frontier: Vec<(usize, usize)>) {
-        let mut new_frontier: Vec<(usize, usize)> = vec![];
+    pub fn calculate_distances(&mut self, maze: &mut Grid, mut frontier: CellTuples) {
+        let mut new_frontier: CellTuples = vec![];
         debug!(Grid::logger(), "frontier = {:?}", frontier);
         if frontier.len() > 0 {
             for c in frontier.iter() {
@@ -99,7 +101,7 @@ pub struct Grid {
     width: usize,
     length: usize,
     cells: Cells,
-    visited: HashSet<(usize, usize)>,
+    visited: HashSet<Pos2d>,
 }
 
 impl Grid {
@@ -121,11 +123,11 @@ impl Grid {
         }
     }
 
-    pub fn visit_cell(&mut self, cell: (usize, usize)) -> bool {
+    pub fn visit_cell(&mut self, cell: Pos2d) -> bool {
         self.visited.insert(cell)
     }
 
-    pub fn is_cell_visited(&self, cell: (usize, usize)) -> bool {
+    pub fn is_cell_visited(&self, cell: Pos2d) -> bool {
         self.visited.contains(&cell)
     }
 
@@ -343,7 +345,7 @@ impl Grid {
         }
     }
 
-    pub fn next_north(&mut self, col: usize, row: usize) -> (usize, usize) {
+    pub fn next_north(&mut self, col: usize, row: usize) -> Pos2d {
         if !self.at_upper(row) {
             (col, row + 1)
         } else {
@@ -363,7 +365,7 @@ impl Grid {
         }
     }
 
-    pub fn next_east(&mut self, col: usize, row: usize) -> (usize, usize) {
+    pub fn next_east(&mut self, col: usize, row: usize) -> Pos2d {
         if !self.at_right(col) {
             (col + 1, row)
         } else {
@@ -382,7 +384,7 @@ impl Grid {
         }
     }
 
-    pub fn next_south(&mut self, col: usize, row: usize) -> (usize, usize) {
+    pub fn next_south(&mut self, col: usize, row: usize) -> Pos2d {
         if !self.at_lower(row) {
             (col, row - 1)
         } else {
@@ -401,7 +403,7 @@ impl Grid {
         }
     }
 
-    pub fn next_west(&mut self, col: usize, row: usize) -> (usize, usize) {
+    pub fn next_west(&mut self, col: usize, row: usize) -> Pos2d {
         if !self.at_left(col) {
             (col - 1, row)
         } else {
