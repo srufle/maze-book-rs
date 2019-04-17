@@ -14,94 +14,18 @@ use std::path::Path;
 use self::image::{Rgb, RgbImage};
 use self::imageproc::drawing;
 use self::imageproc::rect::Rect;
+
 pub type Pos2d = (usize, usize);
 pub type Distance = HashMap<Pos2d, usize>;
 pub type CellTuples = Vec<Pos2d>;
-
-pub struct Distances {
-    cells: Distance,
-}
-
-impl Distances {
-    pub fn new(grid: &Grid) -> Distances {
-        let mut ret = Distances {
-            cells: HashMap::with_capacity(grid.width() * grid.length()),
-        };
-        ret.cells.insert((0, 0), 0);
-        ret
-    }
-
-    pub fn cell_keys(&self) -> Keys<Pos2d, usize> {
-        self.cells.keys()
-    }
-
-    pub fn distance_of_cell(&self, cell: Pos2d) -> Option<&usize> {
-        self.cells.get(&cell)
-    }
-
-    pub fn insert_distance(&mut self, cell: Pos2d, distance: usize) -> Option<usize> {
-        self.cells.insert(cell, distance)
-    }
-
-    pub fn calculate_distances(&mut self, maze: &mut Grid, mut frontier: CellTuples) {
-        let mut new_frontier: CellTuples = vec![];
-        debug!(Grid::logger(), "frontier = {:?}", frontier);
-        if frontier.len() > 0 {
-            for c in frontier.iter() {
-                let cell = maze.cell_at(c.0, c.1).unwrap();
-                let cur_tuple = (c.0, c.1);
-
-                let cur_dist = match self.distance_of_cell(cur_tuple) {
-                    Some(&dist) => dist,
-                    None => 0,
-                };
-                debug!(
-                    Grid::logger(),
-                    "cur_tuple = {:?}, cur_dist={}", cur_tuple, cur_dist
-                );
-                if cell.north {
-                    let next_cell = maze.next_north(cell.col(), cell.row());
-                    if !maze.is_cell_visited(next_cell) {
-                        self.insert_distance(next_cell, cur_dist + 1);
-                        new_frontier.push(next_cell);
-                        maze.visit_cell(cur_tuple);
-                    }
-                }
-                if cell.east {
-                    let next_cell = maze.next_east(cell.col(), cell.row());
-                    if !maze.is_cell_visited(next_cell) {
-                        self.insert_distance(next_cell, cur_dist + 1);
-                        new_frontier.push(next_cell);
-                        maze.visit_cell(cur_tuple);
-                    }
-                }
-                if cell.south {
-                    let next_cell = maze.next_south(cell.col(), cell.row());
-                    if !maze.is_cell_visited(next_cell) {
-                        self.insert_distance(next_cell, cur_dist + 1);
-                        new_frontier.push(next_cell);
-                        maze.visit_cell(cur_tuple);
-                    }
-                }
-                if cell.west {
-                    let next_cell = maze.next_west(cell.col(), cell.row());
-                    if !maze.is_cell_visited(next_cell) {
-                        self.insert_distance(next_cell, cur_dist + 1);
-                        new_frontier.push(next_cell);
-                        maze.visit_cell(cur_tuple);
-                    }
-                }
-            }
-            self.calculate_distances(maze, new_frontier);
-        }
-    }
-}
 
 pub struct Grid {
     width: usize,
     length: usize,
     cells: Cells,
     visited: HashSet<Pos2d>,
+    distances: Distance,
+    frontier: CellTuples,
 }
 
 impl Grid {
@@ -111,6 +35,8 @@ impl Grid {
             length: length,
             cells: Vec::with_capacity(width * length),
             visited: HashSet::with_capacity(width * length),
+            distances: HashMap::with_capacity(width * length),
+            frontier: Vec::with_capacity(width * length),
         }
     }
 
@@ -121,9 +47,15 @@ impl Grid {
                 self.cells.push(cell);
             }
         }
+        self.insert_distance((0, 0), 0);
     }
 
-    pub fn visit_cell(&mut self, cell: Pos2d) -> bool {
+    pub fn entrance(&mut self, entrance: Pos2d) {
+        self.frontier.push(entrance);
+        self.visit_pos(entrance);
+    }
+
+    pub fn visit_pos(&mut self, cell: Pos2d) -> bool {
         self.visited.insert(cell)
     }
 
@@ -139,6 +71,26 @@ impl Grid {
         debug!(Grid::logger(), "{:?}", cells);
         for cell in cells {
             print!("{}|", cell.to_string());
+            if col % self.width() == 0 {
+                print!("\n");
+            }
+            col += 1;
+        }
+    }
+
+    pub fn display_distances(&self) {
+        let mut col = 1;
+        let mut cells = self.cells();
+        debug!(Grid::logger(), "{:?}", cells);
+        cells.sort_by_key(|c| self.cells_len() - c.row());
+        debug!(Grid::logger(), "{:?}", cells);
+        println!("distances =");
+        for cell in cells {
+            let pos = match self.distance_of_cell((cell.col(), cell.row())) {
+                Some(&dist) => ((cell.col(), cell.row()), dist),
+                None => ((999, 999), 999),
+            };
+            print!("{:?}|", pos);
             if col % self.width() == 0 {
                 print!("\n");
             }
@@ -295,7 +247,75 @@ impl Grid {
 
         image.save(filename).unwrap();
     }
+    pub fn calculate_distances(&mut self) {
+        let cur_front = &self.frontier;
+        self.do_calculate_distances(cur_front.to_vec());
+    }
 
+    pub fn distance_keys(&self) -> Keys<Pos2d, usize> {
+        self.distances.keys()
+    }
+
+    pub fn distance_of_cell(&self, cell: Pos2d) -> Option<&usize> {
+        self.distances.get(&cell)
+    }
+
+    pub fn insert_distance(&mut self, cell: Pos2d, distance: usize) -> Option<usize> {
+        self.distances.insert(cell, distance)
+    }
+
+    fn do_calculate_distances(&mut self, mut frontier: Vec<Pos2d>) {
+        let mut new_frontier: Vec<Pos2d> = vec![];
+        debug!(Grid::logger(), "frontier = {:?}", frontier);
+        if frontier.len() > 0 {
+            for c in frontier.iter() {
+                let cell = self.cell_at(c.0, c.1).unwrap();
+                let cur_tuple = (c.0, c.1);
+
+                let cur_dist = match self.distance_of_cell(cur_tuple) {
+                    Some(&dist) => dist,
+                    None => 0,
+                };
+                debug!(
+                    Grid::logger(),
+                    "cur_tuple = {:?}, cur_dist={}", cur_tuple, cur_dist
+                );
+                if cell.north {
+                    let next_cell = self.next_north(cell.col(), cell.row());
+                    if !self.is_cell_visited(next_cell) {
+                        self.insert_distance(next_cell, cur_dist + 1);
+                        new_frontier.push(next_cell);
+                        self.visit_pos(cur_tuple);
+                    }
+                }
+                if cell.east {
+                    let next_cell = self.next_east(cell.col(), cell.row());
+                    if !self.is_cell_visited(next_cell) {
+                        self.insert_distance(next_cell, cur_dist + 1);
+                        new_frontier.push(next_cell);
+                        self.visit_pos(cur_tuple);
+                    }
+                }
+                if cell.south {
+                    let next_cell = self.next_south(cell.col(), cell.row());
+                    if !self.is_cell_visited(next_cell) {
+                        self.insert_distance(next_cell, cur_dist + 1);
+                        new_frontier.push(next_cell);
+                        self.visit_pos(cur_tuple);
+                    }
+                }
+                if cell.west {
+                    let next_cell = self.next_west(cell.col(), cell.row());
+                    if !self.is_cell_visited(next_cell) {
+                        self.insert_distance(next_cell, cur_dist + 1);
+                        new_frontier.push(next_cell);
+                        self.visit_pos(cur_tuple);
+                    }
+                }
+            }
+            self.do_calculate_distances(new_frontier);
+        }
+    }
     pub fn cell_at(&self, col: usize, row: usize) -> Option<Cell> {
         match (col, row) {
             (col, _) if col >= self.width() => None,
@@ -349,7 +369,6 @@ impl Grid {
         if !self.at_upper(row) {
             (col, row + 1)
         } else {
-            // if !self.at_upper_right(col, row) {
             (col, row)
         }
     }
@@ -550,6 +569,24 @@ mod grid_tests {
     }
 
     #[test]
+    fn link_north() {
+        let mut grid = Grid::new(3, 3);
+        grid.init();
+        grid.link_north(0, 0);
+
+        let mut cell_0 = Cell::new(0, 0);
+        let mut cell_1 = Cell::new(0, 1);
+        cell_0.link_north();
+        cell_1.link_south();
+
+        let test_0 = grid.cell_at(0, 0);
+        assert_eq!(test_0, Some(cell_0));
+
+        let test_1 = grid.cell_at(0, 1);
+        assert_eq!(test_1, Some(cell_1));
+    }
+
+    #[test]
     fn link_east() {
         let mut grid = Grid::new(3, 3);
         grid.init();
@@ -568,17 +605,34 @@ mod grid_tests {
     }
 
     #[test]
-    fn link_north() {
+    fn link_south() {
         let mut grid = Grid::new(3, 3);
         grid.init();
-        grid.link_north(0, 0);
+        grid.link_south(2, 2);
 
-        let mut cell_0 = Cell::new(0, 0);
+        let mut cell_0 = Cell::new(2, 2);
+        let mut cell_1 = Cell::new(2, 1);
+        cell_0.link_south();
+        cell_1.link_north();
+
+        let test_0 = grid.cell_at(2, 2);
+        assert_eq!(test_0, Some(cell_0));
+
+        let test_1 = grid.cell_at(2, 1);
+        assert_eq!(test_1, Some(cell_1));
+    }
+    #[test]
+    fn link_west() {
+        let mut grid = Grid::new(3, 3);
+        grid.init();
+        grid.link_west(1, 1);
+
+        let mut cell_0 = Cell::new(1, 1);
         let mut cell_1 = Cell::new(0, 1);
-        cell_0.link_north();
-        cell_1.link_south();
+        cell_0.link_west();
+        cell_1.link_east();
 
-        let test_0 = grid.cell_at(0, 0);
+        let test_0 = grid.cell_at(1, 1);
         assert_eq!(test_0, Some(cell_0));
 
         let test_1 = grid.cell_at(0, 1);

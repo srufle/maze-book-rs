@@ -2,7 +2,6 @@
 extern crate slog;
 
 mod maze;
-use maze::Distances;
 use maze::Grid;
 use maze::Maze;
 #[cfg(not(test))]
@@ -15,15 +14,13 @@ fn main() {
     println!("binary_tree grid");
     let mut grid = Grid::new(size, size);
     grid.init();
+    grid.entrance((0, 0));
     maze::binary_tree::generate_grid(&mut grid);
     // maze::binary_tree::generate_fixed_4x4_grid(&mut grid);
     grid.display();
     grid.render_ascii();
-    let mut distances = Distances::new(&grid);
-    let mut frontier: Vec<(usize, usize)> = vec![];
-    frontier.push((0, 0));
-    grid.visit_cell((0, 0));
-    distances.calculate_distances(&mut grid, frontier);
+    grid.calculate_distances();
+    grid.display_distances();
     grid.render_png(&"./binary_tree_grid.png".to_string());
 
     println!("binary_tree");
