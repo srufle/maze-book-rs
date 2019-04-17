@@ -7,12 +7,93 @@ use super::cell::Cell;
 use super::cell::Cells;
 use slog::Drain;
 use slog::Logger;
-use std::collections::HashSet;
+use std::collections::hash_map::Keys;
+use std::collections::{HashMap, HashSet};
 use std::path::Path;
 
 use self::image::{Rgb, RgbImage};
 use self::imageproc::drawing;
 use self::imageproc::rect::Rect;
+
+pub type Distance = HashMap<(usize, usize), usize>;
+pub struct Distances {
+    cells: Distance,
+}
+
+impl Distances {
+    pub fn new(grid: &Grid) -> Distances {
+        let mut ret = Distances {
+            cells: HashMap::with_capacity(grid.width() * grid.length()),
+        };
+        ret.cells.insert((0, 0), 0);
+        ret
+    }
+
+    pub fn cell_keys(&self) -> Keys<(usize, usize), usize> {
+        self.cells.keys()
+    }
+
+    pub fn distance_of_cell(&self, cell: (usize, usize)) -> Option<&usize> {
+        self.cells.get(&cell)
+    }
+
+    pub fn insert_distance(&mut self, cell: (usize, usize), distance: usize) -> Option<usize> {
+        self.cells.insert(cell, distance)
+    }
+
+    pub fn calculate_distances(&mut self, maze: &mut Grid, mut frontier: Vec<(usize, usize)>) {
+        let mut new_frontier: Vec<(usize, usize)> = vec![];
+        debug!(Grid::logger(), "frontier = {:?}", frontier);
+        if frontier.len() > 0 {
+            for c in frontier.iter() {
+                let cell = maze.cell_at(c.0, c.1).unwrap();
+                let cur_tuple = (c.0, c.1);
+
+                let cur_dist = match self.distance_of_cell(cur_tuple) {
+                    Some(&dist) => dist,
+                    None => 0,
+                };
+                debug!(
+                    Grid::logger(),
+                    "cur_tuple = {:?}, cur_dist={}", cur_tuple, cur_dist
+                );
+                if cell.north {
+                    let next_cell = maze.next_north(cell.col(), cell.row());
+                    if !maze.is_cell_visited(next_cell) {
+                        self.insert_distance(next_cell, cur_dist + 1);
+                        new_frontier.push(next_cell);
+                        maze.visit_cell(cur_tuple);
+                    }
+                }
+                if cell.east {
+                    let next_cell = maze.next_east(cell.col(), cell.row());
+                    if !maze.is_cell_visited(next_cell) {
+                        self.insert_distance(next_cell, cur_dist + 1);
+                        new_frontier.push(next_cell);
+                        maze.visit_cell(cur_tuple);
+                    }
+                }
+                if cell.south {
+                    let next_cell = maze.next_south(cell.col(), cell.row());
+                    if !maze.is_cell_visited(next_cell) {
+                        self.insert_distance(next_cell, cur_dist + 1);
+                        new_frontier.push(next_cell);
+                        maze.visit_cell(cur_tuple);
+                    }
+                }
+                if cell.west {
+                    let next_cell = maze.next_west(cell.col(), cell.row());
+                    if !maze.is_cell_visited(next_cell) {
+                        self.insert_distance(next_cell, cur_dist + 1);
+                        new_frontier.push(next_cell);
+                        maze.visit_cell(cur_tuple);
+                    }
+                }
+            }
+            self.calculate_distances(maze, new_frontier);
+        }
+    }
+}
 
 pub struct Grid {
     width: usize,
@@ -38,6 +119,14 @@ impl Grid {
                 self.cells.push(cell);
             }
         }
+    }
+
+    pub fn visit_cell(&mut self, cell: (usize, usize)) -> bool {
+        self.visited.insert(cell)
+    }
+
+    pub fn is_cell_visited(&self, cell: (usize, usize)) -> bool {
+        self.visited.contains(&cell)
     }
 
     pub fn display(&self) {
@@ -117,7 +206,7 @@ impl Grid {
 
         let mut image = RgbImage::from_pixel(img_width, img_height, white);
 
-        let mut cells = self.cells();
+        let cells = self.cells();
 
         for cell in &cells {
             if cell.north == false {
@@ -243,6 +332,26 @@ impl Grid {
         self.cells.len()
     }
 
+    pub fn link_north(&mut self, col: usize, row: usize) {
+        if let Some(mut cell) = self.cell_at(col, row) {
+            cell.link_north();
+            self.update_cell_at(col, row, cell);
+        }
+        if let Some(mut cell) = self.cell_at(col, row + 1) {
+            cell.link_south();
+            self.update_cell_at(col, row + 1, cell);
+        }
+    }
+
+    pub fn next_north(&mut self, col: usize, row: usize) -> (usize, usize) {
+        if !self.at_upper(row) {
+            (col, row + 1)
+        } else {
+            // if !self.at_upper_right(col, row) {
+            (col, row)
+        }
+    }
+
     pub fn link_east(&mut self, col: usize, row: usize) {
         if let Some(mut cell) = self.cell_at(col, row) {
             cell.link_east();
@@ -254,14 +363,49 @@ impl Grid {
         }
     }
 
-    pub fn link_north(&mut self, col: usize, row: usize) {
+    pub fn next_east(&mut self, col: usize, row: usize) -> (usize, usize) {
+        if !self.at_right(col) {
+            (col + 1, row)
+        } else {
+            (col, row)
+        }
+    }
+
+    pub fn link_south(&mut self, col: usize, row: usize) {
         if let Some(mut cell) = self.cell_at(col, row) {
-            cell.link_north();
+            cell.link_south();
             self.update_cell_at(col, row, cell);
         }
-        if let Some(mut cell) = self.cell_at(col, row + 1) {
-            cell.link_south();
-            self.update_cell_at(col, row + 1, cell);
+        if let Some(mut cell) = self.cell_at(col, row - 1) {
+            cell.link_north();
+            self.update_cell_at(col, row - 1, cell);
+        }
+    }
+
+    pub fn next_south(&mut self, col: usize, row: usize) -> (usize, usize) {
+        if !self.at_lower(row) {
+            (col, row - 1)
+        } else {
+            (col, row)
+        }
+    }
+
+    pub fn link_west(&mut self, col: usize, row: usize) {
+        if let Some(mut cell) = self.cell_at(col, row) {
+            cell.link_west();
+            self.update_cell_at(col, row, cell);
+        }
+        if let Some(mut cell) = self.cell_at(col - 1, row) {
+            cell.link_east();
+            self.update_cell_at(col - 1, row, cell);
+        }
+    }
+
+    pub fn next_west(&mut self, col: usize, row: usize) -> (usize, usize) {
+        if !self.at_left(col) {
+            (col - 1, row)
+        } else {
+            (col, row)
         }
     }
 
