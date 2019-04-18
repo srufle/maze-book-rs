@@ -5,6 +5,7 @@ extern crate slog_term;
 
 use super::cell::Cell;
 use super::cell::Cells;
+use radix_fmt::*;
 use slog::Drain;
 use slog::Logger;
 use std::collections::hash_map::Keys;
@@ -88,9 +89,9 @@ impl Grid {
         for cell in cells {
             let pos = match self.distance_of_cell((cell.col(), cell.row())) {
                 Some(&dist) => ((cell.col(), cell.row()), dist),
-                None => ((999, 999), 999),
+                None => ((0, 0), 0),
             };
-            print!("{:?}|", pos);
+            print!("{},{}-{}|", (pos.0).0, (pos.0).1, radix_36(pos.1));
             if col % self.width() == 0 {
                 print!("\n");
             }
@@ -112,7 +113,10 @@ impl Grid {
         let mut bottom = "+".to_string();
 
         for cell in cells {
-            let body = "   ".to_string();
+            let body = match self.distance_of_cell((cell.col(), cell.row())) {
+                Some(&dist) => format!(" {} ", radix_36(dist)),
+                None => "   ".to_string(),
+            };
             let east_boundary = match cell.east {
                 true => " ".to_string(),
                 false => "|".to_string(),

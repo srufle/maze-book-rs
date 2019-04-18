@@ -18,8 +18,9 @@ fn main() {
     maze::binary_tree::generate_grid(&mut grid);
     // maze::binary_tree::generate_fixed_4x4_grid(&mut grid);
     grid.display();
-    grid.render_ascii();
     grid.calculate_distances();
+    grid.render_ascii();
+
     grid.display_distances();
     grid.render_png(&"./binary_tree_grid.png".to_string());
 
@@ -36,7 +37,9 @@ fn main() {
     println!("sidewinder grid");
     let mut grid = Grid::new(size, size);
     grid.init();
+    grid.entrance((0, 0));
     maze::sidewinder::generate_grid(&mut grid);
     grid.display();
+    grid.calculate_distances();
     grid.render_ascii();
 }
