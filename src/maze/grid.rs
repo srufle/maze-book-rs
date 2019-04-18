@@ -100,14 +100,13 @@ impl Grid {
     }
 
     pub fn render_ascii(&self) {
-        let mut output = "".to_string();
         let mut col = 1;
         let mut cells = self.cells();
         debug!(Grid::logger(), "{:?}", cells);
         cells.sort_by_key(|c| self.cells_len() - c.row());
         debug!(Grid::logger(), "{:?}", cells);
 
-        output = format!("{}{}\n", "+", "---+".repeat(self.width()));
+        let mut output = format!("{}{}\n", "+", "---+".repeat(self.width()));
 
         let mut top = "|".to_string();
         let mut bottom = "+".to_string();
@@ -268,7 +267,7 @@ impl Grid {
         self.distances.insert(pos, distance)
     }
 
-    fn do_calculate_distances(&mut self, mut frontier: Vec<Pos2d>) {
+    fn do_calculate_distances(&mut self, frontier: Vec<Pos2d>) {
         let mut new_frontier: Vec<Pos2d> = vec![];
         debug!(Grid::logger(), "frontier = {:?}", frontier);
         if frontier.len() > 0 {

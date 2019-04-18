@@ -46,7 +46,7 @@ pub fn generate_grid(maze: &mut Grid) {
     }
 }
 
-pub fn generate_fixed_3x3_grid_(maze: &mut Grid) {
+pub fn generate_fixed_3x3_grid(maze: &mut Grid) {
 
 // 00, 02, (E)  |01, 02, (E,W)  |02, 02, (S,W)|
 // 00, 01, (E,S)|01, 01, (E,S,W)|02, 01, (N,S,W)|
