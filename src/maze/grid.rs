@@ -8,7 +8,6 @@ use super::cell::Cells;
 use radix_fmt::*;
 use slog::Drain;
 use slog::Logger;
-use std::collections::hash_map::Keys;
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
 
@@ -49,6 +48,11 @@ impl Grid {
             }
         }
         self.insert_distance((0, 0), 0);
+    }
+
+    pub fn reset_path(&mut self) {
+        self.frontier.clear();
+        self.visited.clear();
     }
 
     pub fn entrance(&mut self, entrance: Pos2d) {
@@ -99,7 +103,7 @@ impl Grid {
         }
     }
 
-    pub fn render_ascii(&self) {
+    fn do_render_ascii(&self, bread_crumbs: Option<&Distance>) {
         let mut col = 1;
         let mut cells = self.cells();
         debug!(Grid::logger(), "{:?}", cells);
@@ -112,10 +116,23 @@ impl Grid {
         let mut bottom = "+".to_string();
 
         for cell in cells {
-            let body = match self.distance_of_cell((cell.col(), cell.row())) {
-                Some(&dist) => format!(" {} ", radix_36(dist)),
-                None => "   ".to_string(),
+            let body = match bread_crumbs {
+                Some(crumbs) => {
+                    let cell_val = match crumbs.get(&(cell.col(), cell.row())) {
+                        Some(&dist) => format!(" {} ", radix_36(dist)),
+                        None => "   ".to_string(),
+                    };
+                    cell_val
+                }
+                None => {
+                    let cell_val = match self.distance_of_cell((cell.col(), cell.row())) {
+                        Some(&dist) => format!(" {} ", radix_36(dist)),
+                        None => "   ".to_string(),
+                    };
+                    cell_val
+                }
             };
+
             let east_boundary = match cell.east {
                 true => " ".to_string(),
                 false => "|".to_string(),
@@ -137,6 +154,9 @@ impl Grid {
             col += 1;
         }
         print!("{}", output);
+    }
+    pub fn render_ascii(&self) {
+        self.do_render_ascii(None);
     }
 
     pub fn render_png(&self, name: &String) {
@@ -255,8 +275,10 @@ impl Grid {
         self.do_calculate_distances(cur_front.to_vec());
     }
 
-    pub fn distance_keys(&self) -> Keys<Pos2d, usize> {
-        self.distances.keys()
+    // pub fn distance_map(&self) -> Keys<Pos2d, usize> {
+    pub fn distance_map(&self) -> Distance {
+        // self.distances.keys()
+        self.distances.clone()
     }
 
     pub fn distance_of_cell(&self, pos: Pos2d) -> Option<&usize> {
@@ -265,6 +287,70 @@ impl Grid {
 
     pub fn insert_distance(&mut self, pos: Pos2d, distance: usize) -> Option<usize> {
         self.distances.insert(pos, distance)
+    }
+
+    pub fn plot_path_between(&mut self, start: Pos2d, end: Pos2d) {
+        let mut bread_crumbs: Distance = HashMap::with_capacity(self.width * self.length);
+        let mut cur_pos = end;
+        let mut cur_dist = match self.distance_of_cell(cur_pos) {
+            Some(&dist) => dist,
+            None => 0,
+        };
+
+        bread_crumbs.insert(cur_pos, cur_dist);
+
+        while cur_pos != start {
+            let cell = self.cell_at(cur_pos.0, cur_pos.1).unwrap();
+            if cell.north {
+                let next_pos = self.next_north(cell.col(), cell.row());
+                let next_dist = match self.distance_of_cell(next_pos) {
+                    Some(&dist) => dist,
+                    None => 0,
+                };
+                if next_dist < cur_dist {
+                    bread_crumbs.insert(next_pos, next_dist);
+                    cur_pos = next_pos;
+                    cur_dist = next_dist;
+                }
+            }
+            if cell.east {
+                let next_pos = self.next_east(cell.col(), cell.row());
+                let next_dist = match self.distance_of_cell(next_pos) {
+                    Some(&dist) => dist,
+                    None => 0,
+                };
+                if next_dist < cur_dist {
+                    bread_crumbs.insert(next_pos, next_dist);
+                    cur_pos = next_pos;
+                    cur_dist = next_dist;
+                }
+            }
+            if cell.south {
+                let next_pos = self.next_south(cell.col(), cell.row());
+                let next_dist = match self.distance_of_cell(next_pos) {
+                    Some(&dist) => dist,
+                    None => 0,
+                };
+                if next_dist < cur_dist {
+                    bread_crumbs.insert(next_pos, next_dist);
+                    cur_pos = next_pos;
+                    cur_dist = next_dist;
+                }
+            }
+            if cell.west {
+                let next_pos = self.next_west(cell.col(), cell.row());
+                let next_dist = match self.distance_of_cell(next_pos) {
+                    Some(&dist) => dist,
+                    None => 0,
+                };
+                if next_dist < cur_dist {
+                    bread_crumbs.insert(next_pos, next_dist);
+                    cur_pos = next_pos;
+                    cur_dist = next_dist;
+                }
+            }
+        }
+        self.do_render_ascii(Some(&bread_crumbs));
     }
 
     fn do_calculate_distances(&mut self, frontier: Vec<Pos2d>) {

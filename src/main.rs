@@ -14,11 +14,15 @@ fn main() {
     println!("binary_tree grid");
     let mut grid = Grid::new(size, size);
     grid.init();
-    grid.entrance((0, 0));
+    let start = (0, 0);
+    grid.entrance(start);
     maze::binary_tree::generate_grid(&mut grid);
     // maze::binary_tree::generate_fixed_4x4_grid(&mut grid);
     grid.display();
     grid.calculate_distances();
+    grid.render_ascii();
+
+    grid.plot_path_between((0,0), (size - 1, size - 1));
     grid.render_ascii();
 
     grid.display_distances();
