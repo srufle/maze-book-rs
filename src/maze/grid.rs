@@ -413,7 +413,7 @@ impl Grid {
         if frontier.len() > 0 {
             for pos in frontier.iter() {
                 let cell = self.cell_at(pos.col, pos.row).unwrap();
-                let cur_pos = Pos2d::p(pos.col, pos.row);
+                let cur_pos = pos.clone();
 
                 let cur_dist = match self.distance_of_cell(cur_pos) {
                     Some(&dist) => dist,
@@ -459,6 +459,7 @@ impl Grid {
             self.do_calculate_distances(new_frontier);
         }
     }
+
     pub fn cell_at(&self, col: usize, row: usize) -> Option<Cell> {
         match (col, row) {
             (col, _) if col >= self.width() => None,
