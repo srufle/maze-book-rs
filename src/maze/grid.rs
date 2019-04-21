@@ -15,17 +15,61 @@ use self::image::{Rgb, RgbImage};
 use self::imageproc::drawing;
 use self::imageproc::rect::Rect;
 
-pub type Pos2d = (usize, usize);
-pub type Distance = HashMap<Pos2d, usize>;
-pub type CellTuples = Vec<Pos2d>;
+#[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Hash)]
+pub struct Pos2d {
+    col: usize,
+    row: usize,
+}
+
+impl Pos2d {
+    pub fn p(col: usize, row: usize) -> Pos2d {
+        Pos2d { col: col, row: row }
+    }
+}
+impl Eq for Pos2d {}
+
+#[derive(Debug, Copy, Clone)]
+pub struct Distance2d {
+    pos: Pos2d,
+    dist: usize,
+}
+impl Distance2d {
+    pub fn d(pos: Pos2d, dist: usize) -> Distance2d {
+        Distance2d {
+            pos: pos,
+            dist: dist,
+        }
+    }
+    pub fn p(col: usize, row: usize, dist: usize) -> Distance2d {
+        Distance2d {
+            pos: Pos2d::p(col, row),
+            dist: dist,
+        }
+    }
+    pub fn pos(&self) -> Pos2d {
+        self.pos
+    }
+    pub fn dist(&self) -> usize {
+        self.dist
+    }
+    pub fn col(&self) -> usize {
+        self.pos.col
+    }
+    pub fn row(&self) -> usize {
+        self.pos.row
+    }
+}
+
+pub type DistanceMap = HashMap<Pos2d, usize>;
+pub type Pos2dVec = Vec<Pos2d>;
 
 pub struct Grid {
     width: usize,
     length: usize,
     cells: Cells,
     visited: HashSet<Pos2d>,
-    distances: Distance,
-    frontier: CellTuples,
+    distances: DistanceMap,
+    frontier: Pos2dVec,
 }
 
 impl Grid {
@@ -47,7 +91,7 @@ impl Grid {
                 self.cells.push(cell);
             }
         }
-        self.insert_distance((0, 0), 0);
+        self.insert_distance(Distance2d::p(0, 0, 0));
     }
 
     pub fn reset_path(&mut self) {
@@ -91,11 +135,11 @@ impl Grid {
         debug!(Grid::logger(), "{:?}", cells);
         println!("distances =");
         for cell in cells {
-            let pos = match self.distance_of_cell((cell.col(), cell.row())) {
-                Some(&dist) => ((cell.col(), cell.row()), dist),
-                None => ((0, 0), 0),
+            let d2d = match self.distance_of_cell(Pos2d::p(cell.col(), cell.row())) {
+                Some(&dist) => Distance2d::p(cell.col(), cell.row(), dist),
+                None => Distance2d::p(0, 0, 0),
             };
-            print!("{},{}-{}|", (pos.0).0, (pos.0).1, radix_36(pos.1));
+            print!("{},{}-{}|", d2d.col(), d2d.row(), radix_36(d2d.dist()));
             if col % self.width() == 0 {
                 print!("\n");
             }
@@ -103,7 +147,7 @@ impl Grid {
         }
     }
 
-    fn do_render_ascii(&self, bread_crumbs: Option<&Distance>) {
+    fn do_render_ascii(&self, bread_crumbs: Option<&DistanceMap>) {
         let mut col = 1;
         let mut cells = self.cells();
         debug!(Grid::logger(), "{:?}", cells);
@@ -118,14 +162,14 @@ impl Grid {
         for cell in cells {
             let body = match bread_crumbs {
                 Some(crumbs) => {
-                    let cell_val = match crumbs.get(&(cell.col(), cell.row())) {
+                    let cell_val = match crumbs.get(&Pos2d::p(cell.col(), cell.row())) {
                         Some(&dist) => format!(" {} ", radix_36(dist)),
                         None => "   ".to_string(),
                     };
                     cell_val
                 }
                 None => {
-                    let cell_val = match self.distance_of_cell((cell.col(), cell.row())) {
+                    let cell_val = match self.distance_of_cell(Pos2d::p(cell.col(), cell.row())) {
                         Some(&dist) => format!(" {} ", radix_36(dist)),
                         None => "   ".to_string(),
                     };
@@ -275,7 +319,7 @@ impl Grid {
         self.do_calculate_distances(cur_front.to_vec());
     }
 
-    pub fn distance_map(&self) -> Distance {
+    pub fn distance_map(&self) -> DistanceMap {
         self.distances.clone()
     }
 
@@ -283,8 +327,8 @@ impl Grid {
         self.distances.get(&pos)
     }
 
-    pub fn insert_distance(&mut self, pos: Pos2d, distance: usize) -> Option<usize> {
-        self.distances.insert(pos, distance)
+    pub fn insert_distance(&mut self, distance: Distance2d) -> Option<usize> {
+        self.distances.insert(distance.pos(), distance.dist())
     }
 
     pub fn max_path_from(&mut self, start: Pos2d) -> (Pos2d, usize) {
@@ -293,14 +337,14 @@ impl Grid {
         let dist_map = self.distance_map();
         for (pos, dist) in dist_map.iter() {
             if dist > &max_dist {
-                max_pos = (pos.0, pos.1);
+                max_pos = Pos2d::p(pos.col, pos.row);
                 max_dist = *dist;
             }
         }
         (max_pos, max_dist)
     }
     pub fn plot_path_between(&mut self, start: Pos2d, end: Pos2d) {
-        let mut bread_crumbs: Distance = HashMap::with_capacity(self.width * self.length);
+        let mut bread_crumbs: DistanceMap = HashMap::with_capacity(self.width * self.length);
         let mut cur_pos = end;
         let mut cur_dist = match self.distance_of_cell(cur_pos) {
             Some(&dist) => dist,
@@ -310,7 +354,7 @@ impl Grid {
         bread_crumbs.insert(cur_pos, cur_dist);
 
         while cur_pos != start {
-            let cell = self.cell_at(cur_pos.0, cur_pos.1).unwrap();
+            let cell = self.cell_at(cur_pos.col, cur_pos.row).unwrap();
             if cell.north {
                 let next_pos = self.next_north(cell.col(), cell.row());
                 let next_dist = match self.distance_of_cell(next_pos) {
@@ -363,13 +407,13 @@ impl Grid {
         self.do_render_ascii(Some(&bread_crumbs));
     }
 
-    fn do_calculate_distances(&mut self, frontier: Vec<Pos2d>) {
-        let mut new_frontier: Vec<Pos2d> = vec![];
+    fn do_calculate_distances(&mut self, frontier: Pos2dVec) {
+        let mut new_frontier: Pos2dVec = vec![];
         debug!(Grid::logger(), "frontier = {:?}", frontier);
         if frontier.len() > 0 {
-            for c in frontier.iter() {
-                let cell = self.cell_at(c.0, c.1).unwrap();
-                let cur_pos = (c.0, c.1);
+            for pos in frontier.iter() {
+                let cell = self.cell_at(pos.col, pos.row).unwrap();
+                let cur_pos = Pos2d::p(pos.col, pos.row);
 
                 let cur_dist = match self.distance_of_cell(cur_pos) {
                     Some(&dist) => dist,
@@ -382,7 +426,7 @@ impl Grid {
                 if cell.north {
                     let next_pos = self.next_north(cell.col(), cell.row());
                     if !self.is_cell_visited(next_pos) {
-                        self.insert_distance(next_pos, cur_dist + 1);
+                        self.insert_distance(Distance2d::d(next_pos, cur_dist + 1));
                         new_frontier.push(next_pos);
                         self.visit_pos(cur_pos);
                     }
@@ -390,7 +434,7 @@ impl Grid {
                 if cell.east {
                     let next_pos = self.next_east(cell.col(), cell.row());
                     if !self.is_cell_visited(next_pos) {
-                        self.insert_distance(next_pos, cur_dist + 1);
+                        self.insert_distance(Distance2d::d(next_pos, cur_dist + 1));
                         new_frontier.push(next_pos);
                         self.visit_pos(cur_pos);
                     }
@@ -398,7 +442,7 @@ impl Grid {
                 if cell.south {
                     let next_pos = self.next_south(cell.col(), cell.row());
                     if !self.is_cell_visited(next_pos) {
-                        self.insert_distance(next_pos, cur_dist + 1);
+                        self.insert_distance(Distance2d::d(next_pos, cur_dist + 1));
                         new_frontier.push(next_pos);
                         self.visit_pos(cur_pos);
                     }
@@ -406,7 +450,7 @@ impl Grid {
                 if cell.west {
                     let next_pos = self.next_west(cell.col(), cell.row());
                     if !self.is_cell_visited(next_pos) {
-                        self.insert_distance(next_pos, cur_dist + 1);
+                        self.insert_distance(Distance2d::d(next_pos, cur_dist + 1));
                         new_frontier.push(next_pos);
                         self.visit_pos(cur_pos);
                     }
@@ -466,9 +510,9 @@ impl Grid {
 
     pub fn next_north(&mut self, col: usize, row: usize) -> Pos2d {
         if !self.at_upper(row) {
-            (col, row + 1)
+            Pos2d::p(col, row + 1)
         } else {
-            (col, row)
+            Pos2d::p(col, row)
         }
     }
 
@@ -485,9 +529,9 @@ impl Grid {
 
     pub fn next_east(&mut self, col: usize, row: usize) -> Pos2d {
         if !self.at_right(col) {
-            (col + 1, row)
+            Pos2d::p(col + 1, row)
         } else {
-            (col, row)
+            Pos2d::p(col, row)
         }
     }
 
@@ -504,9 +548,9 @@ impl Grid {
 
     pub fn next_south(&mut self, col: usize, row: usize) -> Pos2d {
         if !self.at_lower(row) {
-            (col, row - 1)
+            Pos2d::p(col, row - 1)
         } else {
-            (col, row)
+            Pos2d::p(col, row)
         }
     }
 
@@ -523,9 +567,9 @@ impl Grid {
 
     pub fn next_west(&mut self, col: usize, row: usize) -> Pos2d {
         if !self.at_left(col) {
-            (col - 1, row)
+            Pos2d::p(col - 1, row)
         } else {
-            (col, row)
+            Pos2d::p(col, row)
         }
     }
 
