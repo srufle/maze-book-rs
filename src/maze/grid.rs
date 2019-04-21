@@ -275,9 +275,7 @@ impl Grid {
         self.do_calculate_distances(cur_front.to_vec());
     }
 
-    // pub fn distance_map(&self) -> Keys<Pos2d, usize> {
     pub fn distance_map(&self) -> Distance {
-        // self.distances.keys()
         self.distances.clone()
     }
 
@@ -289,6 +287,18 @@ impl Grid {
         self.distances.insert(pos, distance)
     }
 
+    pub fn max_path_from(&mut self, start: Pos2d) -> (Pos2d, usize) {
+        let mut max_dist: usize = 0;
+        let mut max_pos = start;
+        let dist_map = self.distance_map();
+        for (pos, dist) in dist_map.iter() {
+            if dist > &max_dist {
+                max_pos = (pos.0, pos.1);
+                max_dist = *dist;
+            }
+        }
+        (max_pos, max_dist)
+    }
     pub fn plot_path_between(&mut self, start: Pos2d, end: Pos2d) {
         let mut bread_crumbs: Distance = HashMap::with_capacity(self.width * self.length);
         let mut cur_pos = end;
