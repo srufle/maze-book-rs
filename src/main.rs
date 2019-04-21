@@ -11,18 +11,33 @@ fn main() {
     let maze = Maze::blank(size, size);
     maze.display();
 
-    println!("binary_tree grid");
+    println!("Binary Tree grid");
     let mut grid = Grid::new(size, size);
     grid.init();
-    let start = (0, 0);
-    grid.entrance(start);
+    grid.entrance((0, 0));
     maze::binary_tree::generate_grid(&mut grid);
     // maze::binary_tree::generate_fixed_4x4_grid(&mut grid);
+
+    println!("Display internal structure");
     grid.display();
+
+    println!("Calculating distances");
     grid.calculate_distances();
+
+    println!("Render as ASCII");
     grid.render_ascii();
 
-    grid.plot_path_between((0,0), (size - 1, size - 1));
+    println!("Plot shortest path");
+    grid.plot_path_between((0, 0), (size - 1, size - 1));
+
+    println!("Calculating longest path");
+    let max_path1 = grid.max_path_from((0, 0));
+    let max_path2 = grid.max_path_from(max_path1.0);
+
+    println!("max path 1 = {:?}, max path 2 = {:?}", max_path1, max_path2);
+
+    println!("Plot longest path");
+    grid.plot_path_between((0, 0), max_path2.0);
     grid.render_ascii();
 
     grid.display_distances();
