@@ -147,7 +147,7 @@ impl Grid {
         }
     }
 
-    fn do_render_ascii(&self, bread_crumbs: Option<&DistanceMap>) {
+    fn do_render_ascii(&self, dist_map: Option<&DistanceMap>) {
         let mut col = 1;
         let mut cells = self.cells();
         debug!(Grid::logger(), "{:?}", cells);
@@ -160,7 +160,7 @@ impl Grid {
         let mut bottom = "+".to_string();
 
         for cell in cells {
-            let body = match bread_crumbs {
+            let body = match dist_map {
                 Some(crumbs) => {
                     let cell_val = match crumbs.get(&Pos2d::p(cell.col(), cell.row())) {
                         Some(&dist) => format!(" {} ", radix_36(dist)),
@@ -344,14 +344,14 @@ impl Grid {
         (max_pos, max_dist)
     }
     pub fn plot_path_between(&mut self, start: Pos2d, end: Pos2d) {
-        let mut bread_crumbs: DistanceMap = HashMap::with_capacity(self.width * self.length);
+        let mut dist_map: DistanceMap = HashMap::with_capacity(self.width * self.length);
         let mut cur_pos = end;
         let mut cur_dist = match self.distance_of_cell(cur_pos) {
             Some(&dist) => dist,
             None => 0,
         };
 
-        bread_crumbs.insert(cur_pos, cur_dist);
+        dist_map.insert(cur_pos, cur_dist);
 
         while cur_pos != start {
             let cell = self.cell_at(cur_pos.col, cur_pos.row).unwrap();
@@ -362,7 +362,7 @@ impl Grid {
                     None => 0,
                 };
                 if next_dist < cur_dist {
-                    bread_crumbs.insert(next_pos, next_dist);
+                    dist_map.insert(next_pos, next_dist);
                     cur_pos = next_pos;
                     cur_dist = next_dist;
                 }
@@ -374,7 +374,7 @@ impl Grid {
                     None => 0,
                 };
                 if next_dist < cur_dist {
-                    bread_crumbs.insert(next_pos, next_dist);
+                    dist_map.insert(next_pos, next_dist);
                     cur_pos = next_pos;
                     cur_dist = next_dist;
                 }
@@ -386,7 +386,7 @@ impl Grid {
                     None => 0,
                 };
                 if next_dist < cur_dist {
-                    bread_crumbs.insert(next_pos, next_dist);
+                    dist_map.insert(next_pos, next_dist);
                     cur_pos = next_pos;
                     cur_dist = next_dist;
                 }
@@ -398,13 +398,13 @@ impl Grid {
                     None => 0,
                 };
                 if next_dist < cur_dist {
-                    bread_crumbs.insert(next_pos, next_dist);
+                    dist_map.insert(next_pos, next_dist);
                     cur_pos = next_pos;
                     cur_dist = next_dist;
                 }
             }
         }
-        self.do_render_ascii(Some(&bread_crumbs));
+        self.do_render_ascii(Some(&dist_map));
     }
 
     fn do_calculate_distances(&mut self, frontier: Pos2dVec) {
