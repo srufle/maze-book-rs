@@ -46,6 +46,29 @@ impl Cell {
     pub fn col(&self) -> usize {
         self.col
     }
+    pub fn row_i32(&self) -> i32 {
+        (self.row as i32)
+    }
+    pub fn col_i32(&self) -> i32 {
+        (self.col as i32)
+    }
+
+    pub fn inner_x(&self, margin: i32, cell_size: i32, line_width: u32) -> i32 {
+        let lw_i32 = line_width as i32;
+        (margin + (self.col_i32() * cell_size) + lw_i32)
+    }
+    pub fn inner_y(&self, margin: i32, cell_size: i32, line_width: u32) -> i32 {
+        let lw_i32 = line_width as i32;
+        (margin - (self.row_i32() * cell_size) - cell_size + lw_i32)
+    }
+    pub fn inner_w(&self, cell_size: i32, line_width: u32) -> u32 {
+        let lw_i32 = line_width as i32;
+        (cell_size - lw_i32) as u32
+    }
+    pub fn inner_h(&self, cell_size: i32, line_width: u32) -> u32 {
+        let lw_i32 = line_width as i32;
+        (cell_size - lw_i32) as u32
+    }
 }
 
 impl fmt::Display for Cell {
