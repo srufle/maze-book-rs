@@ -1,7 +1,7 @@
-use crate::maze::Grid;
-use crate::maze::Maze;
 use crate::maze::utils;
 use crate::maze::Direction;
+use crate::maze::Grid;
+use crate::maze::Maze;
 use crate::maze::Position;
 
 pub fn generate(maze: &Maze) {
@@ -21,9 +21,9 @@ pub fn generate(maze: &Maze) {
                         run.push(Position::new(col, row, Direction::North));
                     } else if run.len() >= 1 {
                         run.push(Position::new(col, row, Direction::East));
-                        let low = &run[0];
-                        let high = &run[run.len() - 1];
-                        let run_index: usize = utils::choose_cell(low.col(), high.col()) as usize;
+                        let low = 0;
+                        let high = run.len() - 1;
+                        let run_index: usize = utils::choose_cell(low, high) as usize;
                         run[run_index].push_direction(Direction::North);
                     }
 
