@@ -3,11 +3,11 @@ extern crate slog;
 
 mod maze;
 use maze::Grid;
-use maze::Pos2d;
 use maze::Maze;
+use maze::Pos2d;
 #[cfg(not(test))]
 fn main() {
-    let size = 4;
+    let size = 9;
     println!("blank");
     let maze = Maze::blank(size, size);
     maze.display();
@@ -18,6 +18,7 @@ fn main() {
     grid.entrance(Pos2d::p(0, 0));
     maze::binary_tree::generate_grid(&mut grid);
     // maze::binary_tree::generate_fixed_4x4_grid(&mut grid);
+    // maze::binary_tree::generate_fixed_3x3_grid(&mut grid);
 
     println!("Display internal structure");
     grid.display();
@@ -29,20 +30,28 @@ fn main() {
     grid.render_ascii();
 
     println!("Plot shortest path");
-    grid.plot_path_between(Pos2d::p(0, 0), Pos2d::p(size - 1, size - 1));
+    let dist_map = grid.plot_path_between(Pos2d::p(0, 0), Pos2d::p(size - 1, size - 1));
+    grid.render_ascii_path(dist_map);
 
     println!("Calculating longest path");
     let max_path1 = grid.max_path_from(Pos2d::p(0, 0));
-    let max_path2 = grid.max_path_from(max_path1.0);
+    let max_path2 = grid.max_path_from(max_path1.pos());
 
     println!("max path 1 = {:?}, max path 2 = {:?}", max_path1, max_path2);
 
     println!("Plot longest path");
-    grid.plot_path_between(Pos2d::p(0, 0), max_path2.0);
-    grid.render_ascii();
+    let dist_map = grid.plot_path_between(Pos2d::p(0, 0), max_path2.pos());
+    grid.render_ascii_path(dist_map);
 
+    println!("Display Distances");
     grid.display_distances();
+
+    println!("Render PNG");
     grid.render_png(&"./binary_tree_grid.png".to_string());
+
+    println!("Render Path PNG");
+    let dist_map = grid.plot_path_between(Pos2d::p(0, 0), max_path2.pos());
+    grid.render_png_path(&"./binary_tree_grid_path.png".to_string(), dist_map);
 
     println!("binary_tree");
     let maze = Maze::new(size, size);

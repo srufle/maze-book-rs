@@ -203,7 +203,21 @@ impl Grid {
         self.do_render_ascii(None);
     }
 
-    pub fn render_png(&self, name: &String) {
+    pub fn render_ascii_path(&self, dist_map: DistanceMap) {
+        self.do_render_ascii(Some(&dist_map));
+    }
+
+    fn background_for_cell(&self, dist: usize) -> Rgb<u8> {
+        let max_path = self.max_path_from(Pos2d::p(0, 0));
+        let max_dist = max_path.dist();
+
+        let intensity = (max_dist - dist) as f32 / max_dist as f32;
+        let dark = ((255.0 * intensity).round()) as u8;
+        let bright = (128.0 + (127.0 * intensity).round()) as u8;
+        let color = Rgb([dark, bright, dark]);
+        color
+    }
+    fn do_render_png(&self, name: &String, dist_map: Option<&DistanceMap>) {
         let filename = Path::new(&name);
 
         let img_width = 800u32;
@@ -220,21 +234,50 @@ impl Grid {
 
         let black = Rgb([0u8, 0u8, 0u8]);
         // Colors werere used for debugging drawing
-        // let red = Rgb([255u8, 0u8, 0u8]);
-        // let green = Rgb([0u8, 255u8, 0u8]);
-        // let blue = Rgb([0u8, 0u8, 255u8]);
+        // let red = Rgb([128u8, 0u8, 0u8]);
+        // let green = Rgb([0u8, 128u8, 0u8]);
+        // let blue = Rgb([0u8, 0u8, 128u8]);
+        // let gray = Rgb([128u8, 128u8, 128u8]);
         let white = Rgb([255u8, 255u8, 255u8]);
 
         let mut image = RgbImage::from_pixel(img_width, img_height, white);
 
         let cells = self.cells();
+        let line_width = 2u32;
 
         for cell in &cells {
+            let bg_color = match dist_map {
+                Some(dist_map) => {
+                    let cell_val = match dist_map.get(&Pos2d::p(cell.col(), cell.row())) {
+                        Some(&dist) => self.background_for_cell(dist),
+                        None => self.background_for_cell(0),
+                    };
+                    cell_val
+                }
+                None => {
+                    let cell_val = match self.distance_of_cell(Pos2d::p(cell.col(), cell.row())) {
+                        Some(&dist) => self.background_for_cell(dist),
+                        None => self.background_for_cell(0),
+                    };
+                    cell_val
+                }
+            };
+
+            let inner_x = cell.inner_x(left_margin, cell_size, line_width);
+            let inner_y = cell.inner_y(bottom_margin, cell_size, line_width);
+            let inner_w = cell.inner_w(cell_size, line_width);
+            let inner_h = cell.inner_h(cell_size, line_width);
+            drawing::draw_filled_rect_mut(
+                &mut image,
+                Rect::at(inner_x, inner_y).of_size(inner_w, inner_h),
+                bg_color,
+            );
+
             if cell.north == false {
                 let x = left_margin + (cell.col() as i32 * cell_size);
                 let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
                 let width = cell_size as u32;
-                let height = 2u32;
+                let height = line_width;
                 debug!(
                     Grid::logger(),
                     "x={:?}, y={:?}, width={:?}, height={:?}, black, {}, north==false",
@@ -244,26 +287,7 @@ impl Grid {
                     height,
                     cell.to_string()
                 );
-                drawing::draw_filled_rect_mut(
-                    &mut image,
-                    Rect::at(x, y).of_size(width, height),
-                    black,
-                );
-            }
-            if cell.south == false {
-                let x = left_margin + (cell.col() as i32 * cell_size);
-                let y = bottom_margin - (cell.row() as i32 * cell_size);
-                let width = cell_size as u32;
-                let height = 2u32;
-                debug!(
-                    Grid::logger(),
-                    "x={:?}, y={:?}, width={:?}, height={:?}, red, {}, south==false",
-                    x,
-                    y,
-                    width,
-                    height,
-                    cell.to_string()
-                );
+
                 drawing::draw_filled_rect_mut(
                     &mut image,
                     Rect::at(x, y).of_size(width, height),
@@ -273,7 +297,7 @@ impl Grid {
             if cell.east == false {
                 let x = left_margin + (cell.col() as i32 * cell_size) + cell_size;
                 let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
-                let width = 2u32;
+                let width = line_width;
                 let height = cell_size as u32;
                 debug!(
                     Grid::logger(),
@@ -284,6 +308,28 @@ impl Grid {
                     height,
                     cell.to_string()
                 );
+
+                drawing::draw_filled_rect_mut(
+                    &mut image,
+                    Rect::at(x, y).of_size(width, height),
+                    black,
+                );
+            }
+            if cell.south == false {
+                let x = left_margin + (cell.col() as i32 * cell_size);
+                let y = bottom_margin - (cell.row() as i32 * cell_size);
+                let width = cell_size as u32;
+                let height = line_width;
+                debug!(
+                    Grid::logger(),
+                    "x={:?}, y={:?}, width={:?}, height={:?}, red, {}, south==false",
+                    x,
+                    y,
+                    width,
+                    height,
+                    cell.to_string()
+                );
+
                 drawing::draw_filled_rect_mut(
                     &mut image,
                     Rect::at(x, y).of_size(width, height),
@@ -293,7 +339,7 @@ impl Grid {
             if cell.west == false {
                 let x = left_margin + (cell.col() as i32 * cell_size);
                 let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
-                let width = 2u32;
+                let width = line_width;
                 let height = cell_size as u32;
                 debug!(
                     Grid::logger(),
@@ -304,6 +350,7 @@ impl Grid {
                     height,
                     cell.to_string()
                 );
+
                 drawing::draw_filled_rect_mut(
                     &mut image,
                     Rect::at(x, y).of_size(width, height),
@@ -314,6 +361,15 @@ impl Grid {
 
         image.save(filename).unwrap();
     }
+
+    pub fn render_png(&self, name: &String) {
+        self.do_render_png(name, None);
+    }
+
+    pub fn render_png_path(&self, name: &String, dist_map: DistanceMap) {
+        self.do_render_png(name, Some(&dist_map));
+    }
+
     pub fn calculate_distances(&mut self) {
         let cur_front = &self.frontier;
         self.do_calculate_distances(cur_front.to_vec());
@@ -404,6 +460,7 @@ impl Grid {
                 }
             }
         }
+
         dist_map
     }
 
