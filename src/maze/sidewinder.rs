@@ -78,9 +78,9 @@ pub fn generate_grid(maze: &mut Grid) {
                     } else if run.len() >= 1 {
                         maze.link_east(col, row);
                         run.push((col, row));
-                        let low = &run[0];
-                        let high = &run[run.len() - 1];
-                        let run_index: usize = utils::choose_cell(low.0, high.0) as usize;
+                        let low = 0;
+                        let high = run.len() - 1;
+                        let run_index: usize = utils::choose_cell(low, high) as usize;
                         maze.link_north(run_index, row);
                     }
 
