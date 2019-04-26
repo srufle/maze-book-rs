@@ -3,14 +3,10 @@ extern crate slog;
 
 mod maze;
 use maze::Grid;
-use maze::Maze;
 use maze::Pos2d;
 #[cfg(not(test))]
 fn main() {
-    let size = 9;
-    println!("blank");
-    let maze = Maze::blank(size, size);
-    maze.display();
+    let size = 4;
 
     println!("Binary Tree grid");
     let mut grid = Grid::new(size, size);
@@ -52,16 +48,6 @@ fn main() {
     println!("Render Path PNG");
     let dist_map = grid.plot_path_between(Pos2d::p(0, 0), max_path2.pos());
     grid.render_png_path(&"./binary_tree_grid_path.png".to_string(), dist_map);
-
-    println!("binary_tree");
-    let maze = Maze::new(size, size);
-    maze::binary_tree::generate(&maze);
-    maze.display();
-
-    println!("sidewinder");
-    let maze_sw = Maze::new(size, size);
-    maze::sidewinder::generate(&maze_sw);
-    maze_sw.display();
 
     println!("sidewinder grid");
     let mut grid = Grid::new(size, size);
