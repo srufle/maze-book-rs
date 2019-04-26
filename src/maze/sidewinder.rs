@@ -17,10 +17,10 @@ pub fn generate(maze: &mut Grid) {
             } else {
                 let coin = utils::coin_flip();
                 if coin {
-                    if run.len() == 0 {
+                    if run.is_empty() {
                         maze.link_north(col, row);
                         run.push((col, row));
-                    } else if run.len() >= 1 {
+                    } else if !run.is_empty() {
                         maze.link_east(col, row);
                         run.push((col, row));
                         let low = 0;

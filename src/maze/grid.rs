@@ -23,7 +23,7 @@ pub struct Pos2d {
 
 impl Pos2d {
     pub fn p(col: usize, row: usize) -> Pos2d {
-        Pos2d { col: col, row: row }
+        Pos2d { col, row }
     }
 }
 impl Eq for Pos2d {}
@@ -35,15 +35,12 @@ pub struct Distance2d {
 }
 impl Distance2d {
     pub fn d(pos: Pos2d, dist: usize) -> Distance2d {
-        Distance2d {
-            pos: pos,
-            dist: dist,
-        }
+        Distance2d { pos, dist }
     }
     pub fn p(col: usize, row: usize, dist: usize) -> Distance2d {
         Distance2d {
             pos: Pos2d::p(col, row),
-            dist: dist,
+            dist,
         }
     }
     pub fn pos(&self) -> Pos2d {
@@ -75,8 +72,8 @@ pub struct Grid {
 impl Grid {
     pub fn new(width: usize, length: usize) -> Grid {
         Grid {
-            width: width,
-            length: length,
+            width,
+            length,
             cells: Vec::with_capacity(width * length),
             visited: HashSet::with_capacity(width * length),
             distances: HashMap::with_capacity(width * length),
@@ -121,7 +118,7 @@ impl Grid {
         for cell in cells {
             print!("{}|", cell.to_string());
             if col % self.width() == 0 {
-                print!("\n");
+                println!();
             }
             col += 1;
         }
@@ -141,7 +138,7 @@ impl Grid {
             };
             print!("{},{}-{}|", d2d.col(), d2d.row(), radix_36(d2d.dist()));
             if col % self.width() == 0 {
-                print!("\n");
+                println!();
             }
             col += 1;
         }
@@ -161,32 +158,24 @@ impl Grid {
 
         for cell in cells {
             let body = match dist_map {
-                Some(crumbs) => {
-                    let cell_val = match crumbs.get(&Pos2d::p(cell.col(), cell.row())) {
-                        Some(&dist) => format!(" {} ", radix_36(dist)),
-                        None => "   ".to_string(),
-                    };
-                    cell_val
-                }
-                None => {
-                    let cell_val = match self.distance_of_cell(Pos2d::p(cell.col(), cell.row())) {
-                        Some(&dist) => format!(" {} ", radix_36(dist)),
-                        None => "   ".to_string(),
-                    };
-                    cell_val
-                }
+                Some(crumbs) => match crumbs.get(&Pos2d::p(cell.col(), cell.row())) {
+                    Some(&dist) => format!(" {} ", radix_36(dist)),
+                    None => "   ".to_string(),
+                },
+                None => match self.distance_of_cell(Pos2d::p(cell.col(), cell.row())) {
+                    Some(&dist) => format!(" {} ", radix_36(dist)),
+                    None => "   ".to_string(),
+                },
             };
 
-            let east_boundary = match cell.east {
-                true => " ".to_string(),
-                false => "|".to_string(),
+            let east_boundary = if cell.east {
+                " ".to_string()
+            } else {
+                "|".to_string()
             };
             top.push_str(&format!("{}{}", body, east_boundary));
 
-            let south_boundary = match cell.south {
-                true => "   ",
-                false => "---",
-            };
+            let south_boundary = if cell.south { "   " } else { "---" };
             let corner = "+";
             bottom.push_str(&format!("{}{}", south_boundary, corner));
             if col % self.width() == 0 {
@@ -214,10 +203,9 @@ impl Grid {
         let intensity = (max_dist - dist) as f32 / max_dist as f32;
         let dark = ((255.0 * intensity).round()) as u8;
         let bright = (128.0 + (127.0 * intensity).round()) as u8;
-        let color = Rgb([dark, bright, dark]);
-        color
+        Rgb([dark, bright, dark])
     }
-    fn do_render_png(&self, name: &String, dist_map: Option<&DistanceMap>) {
+    fn do_render_png(&self, name: &str, dist_map: Option<&DistanceMap>) {
         let filename = Path::new(&name);
 
         let img_width = 800u32;
@@ -247,20 +235,14 @@ impl Grid {
 
         for cell in &cells {
             let bg_color = match dist_map {
-                Some(dist_map) => {
-                    let cell_val = match dist_map.get(&Pos2d::p(cell.col(), cell.row())) {
-                        Some(&dist) => self.background_for_cell(dist),
-                        None => self.background_for_cell(0),
-                    };
-                    cell_val
-                }
-                None => {
-                    let cell_val = match self.distance_of_cell(Pos2d::p(cell.col(), cell.row())) {
-                        Some(&dist) => self.background_for_cell(dist),
-                        None => self.background_for_cell(0),
-                    };
-                    cell_val
-                }
+                Some(dist_map) => match dist_map.get(&Pos2d::p(cell.col(), cell.row())) {
+                    Some(&dist) => self.background_for_cell(dist),
+                    None => self.background_for_cell(0),
+                },
+                None => match self.distance_of_cell(Pos2d::p(cell.col(), cell.row())) {
+                    Some(&dist) => self.background_for_cell(dist),
+                    None => self.background_for_cell(0),
+                },
             };
 
             let inner_x = cell.inner_x(left_margin, cell_size, line_width);
@@ -273,7 +255,7 @@ impl Grid {
                 bg_color,
             );
 
-            if cell.north == false {
+            if !cell.north {
                 let x = left_margin + (cell.col() as i32 * cell_size);
                 let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
                 let width = cell_size as u32;
@@ -294,7 +276,7 @@ impl Grid {
                     black,
                 );
             }
-            if cell.east == false {
+            if !cell.east {
                 let x = left_margin + (cell.col() as i32 * cell_size) + cell_size;
                 let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
                 let width = line_width;
@@ -315,7 +297,7 @@ impl Grid {
                     black,
                 );
             }
-            if cell.south == false {
+            if !cell.south {
                 let x = left_margin + (cell.col() as i32 * cell_size);
                 let y = bottom_margin - (cell.row() as i32 * cell_size);
                 let width = cell_size as u32;
@@ -336,7 +318,7 @@ impl Grid {
                     black,
                 );
             }
-            if cell.west == false {
+            if !cell.west {
                 let x = left_margin + (cell.col() as i32 * cell_size);
                 let y = bottom_margin - (cell.row() as i32 * cell_size) - cell_size;
                 let width = line_width;
@@ -362,11 +344,11 @@ impl Grid {
         image.save(filename).unwrap();
     }
 
-    pub fn render_png(&self, name: &String) {
+    pub fn render_png(&self, name: &str) {
         self.do_render_png(name, None);
     }
 
-    pub fn render_png_path(&self, name: &String, dist_map: DistanceMap) {
+    pub fn render_png_path(&self, name: &str, dist_map: DistanceMap) {
         self.do_render_png(name, Some(&dist_map));
     }
 
@@ -467,10 +449,10 @@ impl Grid {
     fn do_calculate_distances(&mut self, frontier: Pos2dVec) {
         let mut new_frontier: Pos2dVec = vec![];
         debug!(Grid::logger(), "frontier = {:?}", frontier);
-        if frontier.len() > 0 {
+        if !frontier.is_empty() {
             for pos in frontier.iter() {
                 let cell = self.cell_at(pos.col, pos.row).unwrap();
-                let cur_pos = pos.clone();
+                let cur_pos = *pos; //pos.clone();
 
                 let cur_dist = match self.distance_of_cell(cur_pos) {
                     Some(&dist) => dist,
@@ -523,7 +505,7 @@ impl Grid {
             (_, row) if row >= self.length() => None,
             (col, row) => {
                 let index = (self.width() * row) + col;
-                if index <= (self.width() * self.length()) - 1 {
+                if index < (self.width() * self.length()) {
                     Some(self.cells[index])
                 } else {
                     None
@@ -538,7 +520,7 @@ impl Grid {
             (_, row) if row >= self.length() => panic!("Tried to update ({},{})", col, row),
             (col, row) => {
                 let index = (self.width() * row) + col;
-                if index <= (self.width() * self.length()) - 1 {
+                if index < (self.width() * self.length()) {
                     self.cells[index] = cell
                 } else {
                     panic!("Tried to update ({},{})", col, row)
@@ -676,9 +658,7 @@ impl Grid {
         let drain = slog_term::FullFormat::new(decorator).build().fuse();
         let drain = slog_async::Async::new(drain).build().fuse();
 
-        let log = slog::Logger::root(drain, o!());
-
-        log
+        slog::Logger::root(drain, o!())
     }
 }
 

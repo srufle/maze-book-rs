@@ -18,8 +18,8 @@ pub struct Cell {
 impl Cell {
     pub fn new(col: usize, row: usize) -> Cell {
         Cell {
-            col: col,
-            row: row,
+            col,
+            row,
             north: false,
             east: false,
             south: false,
