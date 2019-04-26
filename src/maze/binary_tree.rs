@@ -1,7 +1,7 @@
 use crate::maze::Grid;
 use crate::maze::utils;
 
-pub fn generate_grid(maze: &mut Grid) {
+pub fn generate(maze: &mut Grid) {
     for row in 0..maze.length() {
         for col in 0..maze.width() {
             if maze.at_upper_right(col, row) {

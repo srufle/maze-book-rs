@@ -1,7 +1,7 @@
 use crate::maze::utils;
 use crate::maze::Grid;
 
-pub fn generate_grid(maze: &mut Grid) {
+pub fn generate(maze: &mut Grid) {
     for row in 0..maze.length() {
         // May use visited
         let mut run: Vec<(usize, usize)> = Vec::new();

@@ -692,7 +692,7 @@ mod grid_tests {
     }
 
     #[test]
-    fn new_grid() {
+    fn new() {
         let mut grid = Grid::new(4, 4);
         assert_eq!(grid.length(), 4);
         assert_eq!(grid.width(), 4);

@@ -12,7 +12,7 @@ fn main() {
     let mut grid = Grid::new(size, size);
     grid.init();
     grid.entrance(Pos2d::p(0, 0));
-    maze::binary_tree::generate_grid(&mut grid);
+    maze::binary_tree::generate(&mut grid);
     // maze::binary_tree::generate_fixed_4x4_grid(&mut grid);
     // maze::binary_tree::generate_fixed_3x3_grid(&mut grid);
 
@@ -43,17 +43,17 @@ fn main() {
     grid.display_distances();
 
     println!("Render PNG");
-    grid.render_png(&"./binary_tree_grid.png".to_string());
+    grid.render_png(&"./binary_tree.png".to_string());
 
     println!("Render Path PNG");
     let dist_map = grid.plot_path_between(Pos2d::p(0, 0), max_path2.pos());
-    grid.render_png_path(&"./binary_tree_grid_path.png".to_string(), dist_map);
+    grid.render_png_path(&"./binary_tree_path.png".to_string(), dist_map);
 
     println!("sidewinder grid");
     let mut grid = Grid::new(size, size);
     grid.init();
     grid.entrance(Pos2d::p(0, 0));
-    maze::sidewinder::generate_grid(&mut grid);
+    maze::sidewinder::generate(&mut grid);
     grid.display();
     grid.calculate_distances();
     grid.render_ascii();
