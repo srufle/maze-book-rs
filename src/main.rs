@@ -8,6 +8,15 @@ use maze::Pos2d;
 fn main() {
     let size = 4;
 
+    println!("aldous_broder grid");
+    let mut grid = Grid::new(size, size);
+    grid.init();
+    grid.entrance(Pos2d::p(0, 0));
+    maze::aldous_broder::generate(&mut grid);
+    grid.display();
+    grid.calculate_distances();
+    grid.render_ascii();
+
     println!("Binary Tree grid");
     let mut grid = Grid::new(size, size);
     grid.init();
