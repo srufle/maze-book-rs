@@ -1,6 +1,7 @@
 extern crate slog_async;
 extern crate slog_term;
 
+pub mod aldous_broder;
 pub mod binary_tree;
 pub mod cell;
 pub mod grid;
