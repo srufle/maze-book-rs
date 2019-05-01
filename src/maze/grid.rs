@@ -15,6 +15,25 @@ use self::image::{Rgb, RgbImage};
 use self::imageproc::drawing;
 use self::imageproc::rect::Rect;
 
+#[derive(Debug, Copy, Clone)]
+pub enum Direction {
+    North = 0,
+    East = 1,
+    South = 2,
+    West = 3,
+}
+
+impl From<u8> for Direction {
+    fn from(val: u8) -> Self {
+        match val {
+            0 => Direction::North,
+            1 => Direction::East,
+            2 => Direction::South,
+            _ => Direction::West,
+        }
+    }
+}
+
 #[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Hash)]
 pub struct Pos2d {
     col: usize,
@@ -24,6 +43,12 @@ pub struct Pos2d {
 impl Pos2d {
     pub fn p(col: usize, row: usize) -> Pos2d {
         Pos2d { col, row }
+    }
+    pub fn col(&self) -> usize {
+        self.col
+    }
+    pub fn row(&self) -> usize {
+        self.row
     }
 }
 impl Eq for Pos2d {}
@@ -50,10 +75,10 @@ impl Distance2d {
         self.dist
     }
     pub fn col(&self) -> usize {
-        self.pos.col
+        self.pos.col()
     }
     pub fn row(&self) -> usize {
-        self.pos.row
+        self.pos.row()
     }
 }
 
@@ -538,13 +563,15 @@ impl Grid {
     }
 
     pub fn link_north(&mut self, col: usize, row: usize) {
-        if let Some(mut cell) = self.cell_at(col, row) {
-            cell.link_north();
-            self.update_cell_at(col, row, cell);
-        }
-        if let Some(mut cell) = self.cell_at(col, row + 1) {
-            cell.link_south();
-            self.update_cell_at(col, row + 1, cell);
+        if !self.at_upper(row) {
+            if let Some(mut cell) = self.cell_at(col, row) {
+                cell.link_north();
+                self.update_cell_at(col, row, cell);
+            }
+            if let Some(mut cell) = self.cell_at(col, row + 1) {
+                cell.link_south();
+                self.update_cell_at(col, row + 1, cell);
+            }
         }
     }
 
@@ -557,13 +584,15 @@ impl Grid {
     }
 
     pub fn link_east(&mut self, col: usize, row: usize) {
-        if let Some(mut cell) = self.cell_at(col, row) {
-            cell.link_east();
-            self.update_cell_at(col, row, cell);
-        }
-        if let Some(mut cell) = self.cell_at(col + 1, row) {
-            cell.link_west();
-            self.update_cell_at(col + 1, row, cell);
+        if !self.at_right(col) {
+            if let Some(mut cell) = self.cell_at(col, row) {
+                cell.link_east();
+                self.update_cell_at(col, row, cell);
+            }
+            if let Some(mut cell) = self.cell_at(col + 1, row) {
+                cell.link_west();
+                self.update_cell_at(col + 1, row, cell);
+            }
         }
     }
 
@@ -576,13 +605,15 @@ impl Grid {
     }
 
     pub fn link_south(&mut self, col: usize, row: usize) {
-        if let Some(mut cell) = self.cell_at(col, row) {
-            cell.link_south();
-            self.update_cell_at(col, row, cell);
-        }
-        if let Some(mut cell) = self.cell_at(col, row - 1) {
-            cell.link_north();
-            self.update_cell_at(col, row - 1, cell);
+        if !self.at_lower(row) {
+            if let Some(mut cell) = self.cell_at(col, row) {
+                cell.link_south();
+                self.update_cell_at(col, row, cell);
+            }
+            if let Some(mut cell) = self.cell_at(col, row - 1) {
+                cell.link_north();
+                self.update_cell_at(col, row - 1, cell);
+            }
         }
     }
 
@@ -595,13 +626,15 @@ impl Grid {
     }
 
     pub fn link_west(&mut self, col: usize, row: usize) {
-        if let Some(mut cell) = self.cell_at(col, row) {
-            cell.link_west();
-            self.update_cell_at(col, row, cell);
-        }
-        if let Some(mut cell) = self.cell_at(col - 1, row) {
-            cell.link_east();
-            self.update_cell_at(col - 1, row, cell);
+        if !self.at_left(col) {
+            if let Some(mut cell) = self.cell_at(col, row) {
+                cell.link_west();
+                self.update_cell_at(col, row, cell);
+            }
+            if let Some(mut cell) = self.cell_at(col - 1, row) {
+                cell.link_east();
+                self.update_cell_at(col - 1, row, cell);
+            }
         }
     }
 
