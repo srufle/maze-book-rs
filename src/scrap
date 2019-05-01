@@ -181,3 +181,337 @@ Apr 13 22:48:29.407 DEBG x=749, y=516, width=2, height=233, green, 02, 02, (S,W)
     }
     dist_vec.sort_by_key(|k| distances.cell_keys().len() - k.1);
     println!("{:?}", dist_vec);
+
+
+    run.len = 2,
+     low = Position { col: 2, row: 1, directions: RefCell { value: [East] } },
+     high = Position { col: 3, row: 1, directions: RefCell { value: [East] } },
+     run = [
+         Position { col: 2, row: 1, directions: RefCell { value: [East] } },
+         Position { col: 3, row: 1, directions: RefCell { value: [East] } }]
+
+aldous_broder grid
++---+---+---+---+
+|       |       |
++---+---+   +---+
+|       |       |
++   +   +   +   +
+|   |       |   |
++   +---+---+   +
+| 0     |       |
++---+---+---+---+
+Apr 30 23:33:06.911 DEBG 1 - Start newly visited=Pos2d { col: 1, row: 2 }, unvisted_count=16
+Apr 30 23:33:06.914 DEBG 1 - Going West
+Apr 30 23:33:06.916 DEBG 1 - End newly visited=Pos2d { col: 0, row: 2 }, unvisted_count=15
+Apr 30 23:33:06.918 DEBG 2 - Start newly visited=Pos2d { col: 0, row: 2 }, unvisted_count=15
+Apr 30 23:33:06.921 DEBG 2 - Going West
+Apr 30 23:33:06.923 DEBG 2 - End newly visited=Pos2d { col: 0, row: 2 }, unvisted_count=15
+Apr 30 23:33:06.926 DEBG 3 - Start newly visited=Pos2d { col: 0, row: 2 }, unvisted_count=15
+Apr 30 23:33:06.929 DEBG 3 - Going South
+Apr 30 23:33:06.932 DEBG 3 - End newly visited=Pos2d { col: 0, row: 1 }, unvisted_count=14
+Apr 30 23:33:06.936 DEBG 4 - Start newly visited=Pos2d { col: 0, row: 1 }, unvisted_count=14
+Apr 30 23:33:06.939 DEBG 4 - Going South
+Apr 30 23:33:06.943 DEBG 4 - End newly visited=Pos2d { col: 0, row: 0 }, unvisted_count=13
+Apr 30 23:33:06.946 DEBG 5 - Start newly visited=Pos2d { col: 0, row: 0 }, unvisted_count=13
+Apr 30 23:33:06.949 DEBG 5 - Going East
+Apr 30 23:33:06.953 DEBG 5 - End newly visited=Pos2d { col: 1, row: 0 }, unvisted_count=12
+Apr 30 23:33:06.955 DEBG 6 - Start newly visited=Pos2d { col: 1, row: 0 }, unvisted_count=12
+Apr 30 23:33:06.958 DEBG 6 - Going West
+Apr 30 23:33:06.962 DEBG 6 - End newly visited=Pos2d { col: 0, row: 0 }, unvisted_count=11
+Apr 30 23:33:06.966 DEBG 7 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=11
+Apr 30 23:33:06.968 DEBG 7 - Going East
+Apr 30 23:33:06.973 DEBG 7 - End previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=11
+Apr 30 23:33:06.975 DEBG 8 - Start previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=11
+Apr 30 23:33:06.978 DEBG 8 - Going West
+Apr 30 23:33:06.981 DEBG 8 - End previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=11
+Apr 30 23:33:06.985 DEBG 9 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=11
+Apr 30 23:33:06.991 DEBG 9 - Going North
+Apr 30 23:33:06.994 DEBG 9 - End previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=11
+Apr 30 23:33:06.996 DEBG 10 - Start previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=11
+Apr 30 23:33:06.999 DEBG 10 - Going North
+Apr 30 23:33:07.002 DEBG 10 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=11
+Apr 30 23:33:07.004 DEBG 11 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=11
+Apr 30 23:33:07.008 DEBG 11 - Going West
+Apr 30 23:33:07.011 DEBG 11 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=11
+Apr 30 23:33:07.013 DEBG 12 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=11
+Apr 30 23:33:07.017 DEBG 12 - Going North
+Apr 30 23:33:07.021 DEBG 12 - End previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=11
+Apr 30 23:33:07.023 DEBG 13 - Start newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=11
+Apr 30 23:33:07.027 DEBG 13 - Going North
+Apr 30 23:33:07.030 DEBG 13 - End newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=11
+Apr 30 23:33:07.033 DEBG 14 - Start newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=11
+Apr 30 23:33:07.038 DEBG 14 - Going East
+Apr 30 23:33:07.040 DEBG 14 - End newly visited=Pos2d { col: 1, row: 3 }, unvisted_count=10
+Apr 30 23:33:07.044 DEBG 15 - Start newly visited=Pos2d { col: 1, row: 3 }, unvisted_count=10
+Apr 30 23:33:07.047 DEBG 15 - Going North
+Apr 30 23:33:07.051 DEBG 15 - End newly visited=Pos2d { col: 1, row: 3 }, unvisted_count=10
+Apr 30 23:33:07.053 DEBG 16 - Start newly visited=Pos2d { col: 1, row: 3 }, unvisted_count=10
+Apr 30 23:33:07.056 DEBG 16 - Going West
+Apr 30 23:33:07.060 DEBG 16 - End newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.062 DEBG 17 - Start previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.067 DEBG 17 - Going East
+Apr 30 23:33:07.069 DEBG 17 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.073 DEBG 18 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.076 DEBG 18 - Going West
+Apr 30 23:33:07.079 DEBG 18 - End previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.082 DEBG 19 - Start previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.084 DEBG 19 - Going West
+Apr 30 23:33:07.086 DEBG 19 - End previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.090 DEBG 20 - Start previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.092 DEBG 20 - Going North
+Apr 30 23:33:07.095 DEBG 20 - End previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.099 DEBG 21 - Start previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=9
+Apr 30 23:33:07.101 DEBG 21 - Going South
+Apr 30 23:33:07.106 DEBG 21 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.115 DEBG 22 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.117 DEBG 22 - Going West
+Apr 30 23:33:07.123 DEBG 22 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.126 DEBG 23 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.129 DEBG 23 - Going East
+Apr 30 23:33:07.132 DEBG 23 - End previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.135 DEBG 24 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.139 DEBG 24 - Going West
+Apr 30 23:33:07.141 DEBG 24 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.143 DEBG 25 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.147 DEBG 25 - Going East
+Apr 30 23:33:07.150 DEBG 25 - End previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.152 DEBG 26 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.157 DEBG 26 - Going East
+Apr 30 23:33:07.160 DEBG 26 - End previously visited=Pos2d { col: 2, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.163 DEBG 27 - Start newly visited=Pos2d { col: 2, row: 2 }, unvisted_count=9
+Apr 30 23:33:07.168 DEBG 27 - Going South
+Apr 30 23:33:07.173 DEBG 27 - End newly visited=Pos2d { col: 2, row: 1 }, unvisted_count=8
+Apr 30 23:33:07.175 DEBG 28 - Start newly visited=Pos2d { col: 2, row: 1 }, unvisted_count=8
+Apr 30 23:33:07.178 DEBG 28 - Going West
+Apr 30 23:33:07.183 DEBG 28 - End newly visited=Pos2d { col: 1, row: 1 }, unvisted_count=7
+Apr 30 23:33:07.185 DEBG 29 - Start newly visited=Pos2d { col: 1, row: 1 }, unvisted_count=7
+Apr 30 23:33:07.189 DEBG 29 - Going North
+Apr 30 23:33:07.193 DEBG 29 - End newly visited=Pos2d { col: 1, row: 2 }, unvisted_count=6
+Apr 30 23:33:07.195 DEBG 30 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=6
+Apr 30 23:33:07.197 DEBG 30 - Going North
+Apr 30 23:33:07.201 DEBG 30 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.205 DEBG 31 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.208 DEBG 31 - Going West
+Apr 30 23:33:07.211 DEBG 31 - End previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.214 DEBG 32 - Start previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.216 DEBG 32 - Going East
+Apr 30 23:33:07.218 DEBG 32 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.220 DEBG 33 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.223 DEBG 33 - Going North
+Apr 30 23:33:07.225 DEBG 33 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.228 DEBG 34 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.231 DEBG 34 - Going East
+Apr 30 23:33:07.235 DEBG 34 - End previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.237 DEBG 35 - Start newly visited=Pos2d { col: 2, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.242 DEBG 35 - Going North
+Apr 30 23:33:07.244 DEBG 35 - End newly visited=Pos2d { col: 2, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.247 DEBG 36 - Start newly visited=Pos2d { col: 2, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.251 DEBG 36 - Going North
+Apr 30 23:33:07.254 DEBG 36 - End newly visited=Pos2d { col: 2, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.257 DEBG 37 - Start newly visited=Pos2d { col: 2, row: 3 }, unvisted_count=6
+Apr 30 23:33:07.260 DEBG 37 - Going South
+Apr 30 23:33:07.263 DEBG 37 - End newly visited=Pos2d { col: 2, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.266 DEBG 38 - Start previously visited=Pos2d { col: 2, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.269 DEBG 38 - Going North
+Apr 30 23:33:07.273 DEBG 38 - End previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.275 DEBG 39 - Start previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.277 DEBG 39 - Going North
+Apr 30 23:33:07.279 DEBG 39 - End previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.281 DEBG 40 - Start previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.283 DEBG 40 - Going West
+Apr 30 23:33:07.286 DEBG 40 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.291 DEBG 41 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.296 DEBG 41 - Going North
+Apr 30 23:33:07.300 DEBG 41 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.303 DEBG 42 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.308 DEBG 42 - Going North
+Apr 30 23:33:07.310 DEBG 42 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.313 DEBG 43 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.317 DEBG 43 - Going East
+Apr 30 23:33:07.322 DEBG 43 - End previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.326 DEBG 44 - Start previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.329 DEBG 44 - Going North
+Apr 30 23:33:07.332 DEBG 44 - End previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.336 DEBG 45 - Start previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.341 DEBG 45 - Going West
+Apr 30 23:33:07.343 DEBG 45 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.347 DEBG 46 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.350 DEBG 46 - Going North
+Apr 30 23:33:07.353 DEBG 46 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.357 DEBG 47 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.361 DEBG 47 - Going South
+Apr 30 23:33:07.366 DEBG 47 - End previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.368 DEBG 48 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.373 DEBG 48 - Going East
+Apr 30 23:33:07.376 DEBG 48 - End previously visited=Pos2d { col: 2, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.379 DEBG 49 - Start previously visited=Pos2d { col: 2, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.382 DEBG 49 - Going West
+Apr 30 23:33:07.386 DEBG 49 - End previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.390 DEBG 50 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.393 DEBG 50 - Going South
+Apr 30 23:33:07.396 DEBG 50 - End previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.401 DEBG 51 - Start previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.405 DEBG 51 - Going South
+Apr 30 23:33:07.407 DEBG 51 - End previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=5
+Apr 30 23:33:07.409 DEBG 52 - Start previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=5
+Apr 30 23:33:07.413 DEBG 52 - Going North
+Apr 30 23:33:07.416 DEBG 52 - End previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.419 DEBG 53 - Start previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.423 DEBG 53 - Going West
+Apr 30 23:33:07.426 DEBG 53 - End previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.429 DEBG 54 - Start previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.433 DEBG 54 - Going North
+Apr 30 23:33:07.436 DEBG 54 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.441 DEBG 55 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.443 DEBG 55 - Going East
+Apr 30 23:33:07.446 DEBG 55 - End previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.449 DEBG 56 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.452 DEBG 56 - Going North
+Apr 30 23:33:07.456 DEBG 56 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.458 DEBG 57 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.462 DEBG 57 - Going South
+Apr 30 23:33:07.467 DEBG 57 - End previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.469 DEBG 58 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.474 DEBG 58 - Going North
+Apr 30 23:33:07.476 DEBG 58 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.478 DEBG 59 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.480 DEBG 59 - Going South
+Apr 30 23:33:07.484 DEBG 59 - End previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.486 DEBG 60 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.491 DEBG 60 - Going South
+Apr 30 23:33:07.495 DEBG 60 - End previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.497 DEBG 61 - Start previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.500 DEBG 61 - Going West
+Apr 30 23:33:07.503 DEBG 61 - End previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.507 DEBG 62 - Start previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.510 DEBG 62 - Going North
+Apr 30 23:33:07.513 DEBG 62 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.516 DEBG 63 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.520 DEBG 63 - Going West
+Apr 30 23:33:07.524 DEBG 63 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.527 DEBG 64 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.530 DEBG 64 - Going West
+Apr 30 23:33:07.533 DEBG 64 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.536 DEBG 65 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.538 DEBG 65 - Going East
+Apr 30 23:33:07.540 DEBG 65 - End previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.542 DEBG 66 - Start previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.544 DEBG 66 - Going South
+Apr 30 23:33:07.548 DEBG 66 - End previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.552 DEBG 67 - Start previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.556 DEBG 67 - Going South
+Apr 30 23:33:07.559 DEBG 67 - End previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=5
+Apr 30 23:33:07.561 DEBG 68 - Start previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=5
+Apr 30 23:33:07.564 DEBG 68 - Going South
+Apr 30 23:33:07.568 DEBG 68 - End previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=5
+Apr 30 23:33:07.571 DEBG 69 - Start previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=5
+Apr 30 23:33:07.575 DEBG 69 - Going West
+Apr 30 23:33:07.578 DEBG 69 - End previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=5
+Apr 30 23:33:07.582 DEBG 70 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=5
+Apr 30 23:33:07.585 DEBG 70 - Going North
+Apr 30 23:33:07.588 DEBG 70 - End previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.591 DEBG 71 - Start previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.594 DEBG 71 - Going West
+Apr 30 23:33:07.597 DEBG 71 - End previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.603 DEBG 72 - Start previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.605 DEBG 72 - Going East
+Apr 30 23:33:07.608 DEBG 72 - End previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.611 DEBG 73 - Start previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.614 DEBG 73 - Going East
+Apr 30 23:33:07.618 DEBG 73 - End previously visited=Pos2d { col: 2, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.621 DEBG 74 - Start previously visited=Pos2d { col: 2, row: 1 }, unvisted_count=5
+Apr 30 23:33:07.624 DEBG 74 - Going North
+Apr 30 23:33:07.628 DEBG 74 - End previously visited=Pos2d { col: 2, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.631 DEBG 75 - Start previously visited=Pos2d { col: 2, row: 2 }, unvisted_count=5
+Apr 30 23:33:07.634 DEBG 75 - Going North
+Apr 30 23:33:07.638 DEBG 75 - End previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.641 DEBG 76 - Start previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.644 DEBG 76 - Going East
+Apr 30 23:33:07.647 DEBG 76 - End previously visited=Pos2d { col: 3, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.650 DEBG 77 - Start newly visited=Pos2d { col: 3, row: 3 }, unvisted_count=5
+Apr 30 23:33:07.653 DEBG 77 - Going West
+Apr 30 23:33:07.656 DEBG 77 - End newly visited=Pos2d { col: 2, row: 3 }, unvisted_count=4
+Apr 30 23:33:07.659 DEBG 78 - Start previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=4
+Apr 30 23:33:07.661 DEBG 78 - Going West
+Apr 30 23:33:07.664 DEBG 78 - End previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=4
+Apr 30 23:33:07.665 DEBG 79 - Start previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=4
+Apr 30 23:33:07.668 DEBG 79 - Going West
+Apr 30 23:33:07.672 DEBG 79 - End previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=4
+Apr 30 23:33:07.674 DEBG 80 - Start previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=4
+Apr 30 23:33:07.679 DEBG 80 - Going South
+Apr 30 23:33:07.682 DEBG 80 - End previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=4
+Apr 30 23:33:07.684 DEBG 81 - Start previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=4
+Apr 30 23:33:07.689 DEBG 81 - Going South
+Apr 30 23:33:07.692 DEBG 81 - End previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=4
+Apr 30 23:33:07.697 DEBG 82 - Start previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=4
+Apr 30 23:33:07.700 DEBG 82 - Going West
+Apr 30 23:33:07.705 DEBG 82 - End previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=4
+Apr 30 23:33:07.709 DEBG 83 - Start previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=4
+Apr 30 23:33:07.712 DEBG 83 - Going South
+Apr 30 23:33:07.715 DEBG 83 - End previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.717 DEBG 84 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.722 DEBG 84 - Going North
+Apr 30 23:33:07.725 DEBG 84 - End previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=4
+Apr 30 23:33:07.727 DEBG 85 - Start previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=4
+Apr 30 23:33:07.729 DEBG 85 - Going South
+Apr 30 23:33:07.731 DEBG 85 - End previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.733 DEBG 86 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.737 DEBG 86 - Going East
+Apr 30 23:33:07.739 DEBG 86 - End previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.741 DEBG 87 - Start previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.744 DEBG 87 - Going North
+Apr 30 23:33:07.747 DEBG 87 - End previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=4
+Apr 30 23:33:07.749 DEBG 88 - Start previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=4
+Apr 30 23:33:07.752 DEBG 88 - Going South
+Apr 30 23:33:07.755 DEBG 88 - End previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.758 DEBG 89 - Start previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.761 DEBG 89 - Going West
+Apr 30 23:33:07.764 DEBG 89 - End previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.766 DEBG 90 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.770 DEBG 90 - Going West
+Apr 30 23:33:07.773 DEBG 90 - End previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.775 DEBG 91 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.779 DEBG 91 - Going South
+Apr 30 23:33:07.782 DEBG 91 - End previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.784 DEBG 92 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.788 DEBG 92 - Going South
+Apr 30 23:33:07.790 DEBG 92 - End previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.793 DEBG 93 - Start previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.797 DEBG 93 - Going East
+Apr 30 23:33:07.800 DEBG 93 - End previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.803 DEBG 94 - Start previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.807 DEBG 94 - Going South
+Apr 30 23:33:07.809 DEBG 94 - End previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.812 DEBG 95 - Start previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.815 DEBG 95 - Going East
+Apr 30 23:33:07.819 DEBG 95 - End previously visited=Pos2d { col: 2, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.821 DEBG 96 - Start newly visited=Pos2d { col: 2, row: 0 }, unvisted_count=4
+Apr 30 23:33:07.824 DEBG 96 - Going East
+Apr 30 23:33:07.828 DEBG 96 - End newly visited=Pos2d { col: 3, row: 0 }, unvisted_count=3
+Apr 30 23:33:07.831 DEBG 97 - Start newly visited=Pos2d { col: 3, row: 0 }, unvisted_count=3
+Apr 30 23:33:07.835 DEBG 97 - Going North
+Apr 30 23:33:07.838 DEBG 97 - End newly visited=Pos2d { col: 3, row: 1 }, unvisted_count=2
+Apr 30 23:33:07.841 DEBG 98 - Start newly visited=Pos2d { col: 3, row: 1 }, unvisted_count=2
+Apr 30 23:33:07.844 DEBG 98 - Going North
+Apr 30 23:33:07.848 DEBG 98 - End newly visited=Pos2d { col: 3, row: 2 }, unvisted_count=1
+Apr 30 23:33:07.851 DEBG 99 - Start newly visited=Pos2d { col: 3, row: 2 }, unvisted_count=1
+Apr 30 23:33:07.855 DEBG 99 - Going West
+Apr 30 23:33:07.857 DEBG 99 - End newly visited=Pos2d { col: 2, row: 2 }, unvisted_count=0
+Apr 30 23:33:07.862 DEBG [Cell { col: 0, row: 0, north: true, east: true, south: false, west: false }, Cell { col: 1, row: 0, north: false, east: false, south: false, west: true }, Cell { col: 2, row: 0, north: false, east: true, south: false, west: false }, Cell { col: 3, row: 0, north: true, east: false, south: false, west: true }, Cell { col: 0, row: 1, north: true, east: false, south: true, west: false }, Cell { col: 1, row: 1, north: true, east: true, south: false, west: false }, Cell { col: 2, row: 1, north: true, east: false, south: false, west: true }, Cell { col: 3, row: 1, north: true, east: false, south: true, west: false }, Cell { col: 0, row: 2, north: false, east: true, south: true, west: false }, Cell { col: 1, row: 2, north: false, east: false, south: true, west: true }, Cell { col: 2, row: 2, north: true, east: true, south: true, west: false }, Cell { col: 3, row: 2, north: false, east: false, south: true, west: true }, Cell { col: 0, row: 3, north: false, east: true, south: false, west: false }, Cell { col: 1, row: 3, north: false, east: false, south: false, west: true }, Cell { col: 2, row: 3, north: false, east: true, south: true, west: false }, Cell { col: 3, row: 3, north: false, east: false, south: false, west: true }]
+Apr 30 23:33:07.864 DEBG [Cell { col: 0, row: 3, north: false, east: true, south: false, west: false }, Cell { col: 1, row: 3, north: false, east: false, south: false, west: true }, Cell { col: 2, row: 3, north: false, east: true, south: true, west: false }, Cell { col: 3, row: 3, north: false, east: false, south: false, west: true }, Cell { col: 0, row: 2, north: false, east: true, south: true, west: false }, Cell { col: 1, row: 2, north: false, east: false, south: true, west: true }, Cell { col: 2, row: 2, north: true, east: true, south: true, west: false }, Cell { col: 3, row: 2, north: false, east: false, south: true, west: true }, Cell { col: 0, row: 1, north: true, east: false, south: true, west: false }, Cell { col: 1, row: 1, north: true, east: true, south: false, west: false }, Cell { col: 2, row: 1, north: true, east: false, south: false, west: true }, Cell { col: 3, row: 1, north: true, east: false, south: true, west: false }, Cell { col: 0, row: 0, north: true, east: true, south: false, west: false }, Cell { col: 1, row: 0, north: false, east: false, south: false, west: true }, Cell { col: 2, row: 0, north: false, east: true, south: false, west: false }, Cell { col: 3, row: 0, north: true, east: false, south: false, west: true }]
+00, 03, (E)|01, 03, (W)|02, 03, (E,S)|03, 03, (W)|
+00, 02, (E,S)|01, 02, (S,W)|02, 02, (N,E,S)|03, 02, (S,W)|
+00, 01, (N,S)|01, 01, (N,E)|02, 01, (N,W)|03, 01, (N,S)|
+00, 00, (N,E)|01, 00, (W)|02, 00, (E)|03, 00, (N,W)|
+Apr 30 23:33:07.868 DEBG frontier = []
+Apr 30 23:33:07.871 DEBG [Cell { col: 0, row: 0, north: true, east: true, south: false, west: false }, Cell { col: 1, row: 0, north: false, east: false, south: false, west: true }, Cell { col: 2, row: 0, north: false, east: true, south: false, west: false }, Cell { col: 3, row: 0, north: true, east: false, south: false, west: true }, Cell { col: 0, row: 1, north: true, east: false, south: true, west: false }, Cell { col: 1, row: 1, north: true, east: true, south: false, west: false }, Cell { col: 2, row: 1, north: true, east: false, south: false, west: true }, Cell { col: 3, row: 1, north: true, east: false, south: true, west: false }, Cell { col: 0, row: 2, north: false, east: true, south: true, west: false }, Cell { col: 1, row: 2, north: false, east: false, south: true, west: true }, Cell { col: 2, row: 2, north: true, east: true, south: true, west: false }, Cell { col: 3, row: 2, north: false, east: false, south: true, west: true }, Cell { col: 0, row: 3, north: false, east: true, south: false, west: false }, Cell { col: 1, row: 3, north: false, east: false, south: false, west: true }, Cell { col: 2, row: 3, north: false, east: true, south: true, west: false }, Cell { col: 3, row: 3, north: false, east: false, south: false, west: true }]
+Apr 30 23:33:07.873 DEBG [Cell { col: 0, row: 3, north: false, east: true, south: false, west: false }, Cell { col: 1, row: 3, north: false, east: false, south: false, west: true }, Cell { col: 2, row: 3, north: false, east: true, south: true, west: false }, Cell { col: 3, row: 3, north: false, east: false, south: false, west: true }, Cell { col: 0, row: 2, north: false, east: true, south: true, west: false }, Cell { col: 1, row: 2, north: false, east: false, south: true, west: true }, Cell { col: 2, row: 2, north: true, east: true, south: true, west: false }, Cell { col: 3, row: 2, north: false, east: false, south: true, west: true }, Cell { col: 0, row: 1, north: true, east: false, south: true, west: false }, Cell { col: 1, row: 1, north: true, east: true, south: false, west: false }, Cell { col: 2, row: 1, north: true, east: false, south: false, west: true }, Cell { col: 3, row: 1, north: true, east: false, south: true, west: false }, Cell { col: 0, row: 0, north: true, east: true, south: false, west: false }, Cell { col: 1, row: 0, north: false, east: false, south: false, west: true }, Cell { col: 2, row: 0, north: false, east: true, south: false, west: false }, Cell { col: 3, row: 0, north: true, east: false, south: false, west: true }]
++---+---+---+---+
+|       |       |
++---+---+   +---+
+|       |       |
++   +   +   +   +
+|   |       |   |
++   +---+---+   +
+| 0     |       |
++---+---+---+---+

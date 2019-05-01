@@ -26,7 +26,7 @@ pub fn generate(maze: &mut Grid) {
                         maze.link_east(col, row);
                         run.push(Pos2d::p(col, row));
                         let low = 0;
-                        let high = run.len() - 1;
+                        let high = run.len() - 1; // TODO: Not sure we have to subtract 1
                         let run_index: usize = utils::choose_cell(low, high) as usize;
                         maze.link_north(run_index, row);
                     }

@@ -1,0 +1,219 @@
++---+---+---+---+
+|       |       |
++---+---+---+---+
+|       |   |   |
++   +---+---+   +
+|   |   |   |   |
++   +---+---+---+
+| 0 |       |   |
++---+---+---+---+
+aldous_broder grid
+May 01 07:18:13.908 DEBG 1 - ------> newly visited=Pos2d { col: 2, row: 3 }, unvisted_count=15
+May 01 07:18:46.841 DEBG 1 - Move East
+May 01 07:19:22.543 DEBG 1 - Link East
+May 01 07:25:31.664 DEBG 1 - <------ newly visited=Pos2d { col: 3, row: 3 }, unvisted_count=14
+:
+May 01 07:2551.622 DEBG 2 - ------> newly visited=Pos2d { col: 3, row: 3 }, unvisted_count=14
+May 01 07:25:57.907 DEBG 2 - Move West
+May 01 07:26:49.456 DEBG 2 - <------ newly visited=Pos2d { col: 2, row: 3 }, unvisted_count=13
+
+May 01 07:26:58.228 DEBG 3 - - - - - - -> previously visited=Pos2d { col: 2, row: 3 }, unvisted_count=13
+May 01 07:27:06.993 DEBG 3 - - - - - - -> Move West
+May 01 07:27:38.365 DEBG 3 - <- - - - - - previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=13
+
+May 01 07:29:20.625 DEBG 4 - ------> newly visited=Pos2d { col: 1, row: 3 }, unvisted_count=13
+May 01 07:29:25.456 DEBG 4 - Move West
+May 01 07:29:32.898 DEBG 4 - Link West
+May 01 07:29:39.446 DEBG 4 - <------ newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=12
+May 01 07:29:45.403 DEBG 5 - ------> newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=12
+May 01 07:29:53.064 DEBG 5 - Move North
+May 01 07:30:02.117 DEBG 5 - Link North
+May 01 07:30:13.774 DEBG 5 - <------ newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=12
+May 01 07:30:21.109 DEBG 6 - ------> newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=12
+May 01 07:30:24.673 DEBG 6 - Move West
+May 01 07:30:28.093 DEBG 6 - Link West
+May 01 07:30:35.027 DEBG 6 - <------ newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=12
+27 DEBG 7 - ------> newly visited=Pos2d { col: 0, row: 3 }, unvisted_count=12
+May 01 07:30:35.0May 01 07:30:42.971 DEBG 7 - Move East
+May 01 07:30:52.899 DEBG 7 - <------ newly visited=Pos2d { col: 1, row: 3 }, unvisted_count=11
+May 01 07:30:52.900 DEBG 8 - - - - - - -> previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=11
+May 01 07:31:22.817 DEBG 8 - - - - - - -> Move South
+May 01 07:31:30.317 DEBG 8 - <- - - - - - - previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=11
+May 01 07:31:30.317 DEBG 9 - ------> newly visited=Pos2d { col: 1, row: 2 }, unvisted_count=11
+May 01 07:31:31.812 DEBG 9 - Move West
+May 01 07:31:31.812 DEBG 9 - Link West
+May 01 07:31:33.554 DEBG 9 - <------ newly visited=Pos2d { col: 0, row: 2 }, unvisted_count=10
+May 01 07:31:33.554 DEBG 10 - ------> newly visited=Pos2d { col: 0, row: 2 }, unvisted_count=10
+May 01 07:31:36.275 DEBG 10 - Move West
+May 01 07:31:36.276 DEBG 10 - Link West
+May 01 07:31:36.278 DEBG 10 - <------ newly visited=Pos2d { col: 0, row: 2 }, unvisted_count=10
+May 01 07:31:36.278 DEBG 11 - ------> newly visited=Pos2d { col: 0, row: 2 }, unvisted_count=10
+May 01 07:31:36.955 DEBG 11 - Move South
+May 01 07:31:36.955 DEBG 11 - Link South
+May 01 07:31:43.112 DEBG 11 - <------ newly visited=Pos2d { col: 0, row: 1 }, unvisted_count=9
+May 01 07:31:43.113 DEBG 12 - ------> newly visited=Pos2d { col: 0, row: 1 }, unvisted_count=9
+May 01 07:31:44.050 DEBG 12 - Move South
+
+May 01 07:31:44.050 DEBG 12 - Link SouthMay 01 07:31:45.146 DEBG 12 - <------ newly visited=Pos2d { col: 0, row: 0 }, unvisted_count=8
+May 01 07:31:45.147 DEBG 13 - ------> newly visited=Pos2d { col: 0, row: 0 }, unvisted_count=8
+May 01 07:31:45.973 DEBG 13 - Move North
+May 01 07:31:46.762 DEBG 13 - <------ newly visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:31:46.763 DEBG 14 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May
+01 07:31:46.765 DEBG 14 - - - - - - -> Move South
+May 01 07:31:51.138 DEBG 14 - <- - - - - - - previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=7
+May 01 07:31:51.138 DEBG 15 - - - - - - -> previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=7
+May 01 07:31:51.139 DEBG 15 - - - - - - -> Move North
+May 01 07:31:53.506 DEBG 15 - <- - - - - - - previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:31:53.506 DEBG 16 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:31:53.507 DEBG 16 - - - - - - -> Move South
+May 01 07:31:55.466 DEBG 16 - <- - - - - - - previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=7
+May 01 07:31:55.467 DEBG 17 - - - - - - -> previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=7
+May 01 07:31:55.467 DEBG 17 - - - - - - - -> Move West
+May 01 07:31:56.762 DEBG 17 - <- - - - - - - previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=7
+May 01 07:31:56.765 DEBG 18 - - - - - - -> previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=7
+May 01 07:31:56.768 DEBG 18 - - - - - - -> Move North
+May 01 07:31:58.042 DEBG 18 - <- - - - - - - previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:31:58.042 DEBG 19 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:31:58.043 DEBG 19 - - - - - - - -> Move West
+May 01 07:31:59.171 DEBG 19 - <- - - - - - - previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:31:59.171 DEBG 20 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:31:59.173 DEBG 20 - - - - - - - -> Move West
+May 01 07:32:00.234 DEBG 20 - <- - - - - - - previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:32:00.234 DEBG 21 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=7
+May 01 07:32:00.236 DEBG 21 - - - - - - -> Move North
+May 01 07:32:01.322 DEBG 21 - <- - - - - - - previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=7
+May 01 07:32:01.322 DEBG 22 - - - - - - -> previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=7
+May 01 07:32:01.323 DEBG 22 - - - - - - -> Move East
+May 01 07:32:02.812 DEBG 22 - <- - - - - - - previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=7
+May 01 07:32:02.813 DEBG 23 - - - - - - -> previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=7
+May 01 07:32:02.814 DEBG 23 - - - - - - -> Move South
+May 01 07:32:03.833 DEBG 23 - <- - - - - - - previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=7
+May 01 07:32:03.834 DEBG 24 - ------> newly visited=Pos2d { col: 1, row: 1 }, unvisted_count=7
+May 01 07:32:04.434 DEBG 24 - Move North
+May 01 07:32:11.234 DEBG 24 - <------ newly visited=Pos2d { col: 1, row: 2 }, unvisted_count=6
+May 01 07:32:11.234 DEBG 25 - - - - - - -> previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=6
+11
+DEBG
+May 01 07:32:.235  25 - - - - - - -> Move North
+May 01 07:32:12.890 DEBG 25 - <- - - - - - - previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:12.891 DEBG 26 - - - - - - -> previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:12.892 DEBG 26 - - - - - - - -> Move West
+May 01 07:32:16.177 DEBG 26 - <- - - - - - - previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=6
+May 01 07:32:16.178 DEBG 27 - - - - - - -> previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=6
+May 01 07:32:16.180 DEBG 27 - - - - - - -> Move North
+May 01 07:32:17.080 DEBG 27 - <- - - - - - - previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=6
+May 01 07:32:17.081 DEBG 28 - - - - - - -> previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=6
+May 01 07:32:17.082 DEBG 28 - - - - - - -> Move East
+May 01 07:32:17.737 DEBG 28 - <- - - - - - - previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:17.738 DEBG 29 - - - - - - -> previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:17.749 DEBG 29 - - - - - - - -> Move West
+May 01 07:32:18.321 DEBG 29 - <- - - - - - - previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=6
+May 01 07:32:18.322 DEBG 30 - - - - - - -> previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=6
+May 01 07:32:18.323 DEBG 30 - - - - - - -> Move East
+May 01 07:32:18.873 DEBG 30 - <- - - - - - - previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:18.873 DEBG 31 - - - - - - -> previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:18.874 DEBG 31 - - - - - - -> Move North
+May 01 07:32:19.435 DEBG 31 - <- - - - - - - previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:19.435 DEBG 32 - - - - - - -> previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:19.436 DEBG 32 - - - - - - -> Move North
+May 01 07:32:33.762 DEBG 32 - <- - - - - - - previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:33.763 DEBG 33 - - - - - - -> previously visited=Pos2d { col: 1, row: 3 }, unvisted_count=6
+May 01 07:32:33.764 DEBG 33 - - - - - - -> Move South
+May 01 07:32:36.001 DEBG 33 - <- - - - - - - previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=6
+May 01 07:32:36.002 DEBG 34 - - - - - - -> previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=6
+May 01 07:32:36.002 DEBG 34 - - - - - - -> Move East
+May 01 07:32:37.201 DEBG 34 - <- - - - - - - previously visited=Pos2d { col: 2, row: 2 }, unvisted_count=6
+May 01 07:32:37.202 DEBG 35 - ------> newly visited=Pos2d { col: 2, row: 2 }, unvisted_count=6
+May 01 07:32:40.138 DEBG 35 - Move West
+May 01 07:32:41.713 DEBG 35 - <------ newly visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+May 01 07:32:41.714 DEBG 36 - - - - - - -> previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=5
+May 01 07:32:41.715 DEBG 36 - - - - - - - -> Move West
+May 01 07:32:43.107 DEBG 36 - <- - - - - - - previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+May 01 07:32:43.108 DEBG 37 - - - - - - -> previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+May 01 07:32:43.108 DEBG 37 - - - - - - - -> Move West
+May 01 07:32:44.074 DEBG 37 - <- - - - - - - previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+May 01 07:32:44.075 DEBG 38 - - - - - - -> previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=5
+May 01 07:32:44.076 DEBG 38 - - - - - - -> Move South
+May 01 07:32:44.653 DEBG 38 - <- - - - - - - previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+May 01 07:32:44.654 DEBG 39 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+May 01 07:32:44.655 DEBG 39 - - - - - - - -> Move West
+May 01 07:32:45.282 DEBG 39 - <- - - - - - - previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+May 01 07:32:45.283 DEBG 40 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+May 01 07:32:45.283 DEBG 40 - - - - - - -> Move South
+May 01 07:32:45.865 DEBG 40 - <- - - - - - - previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=5
+May 01 07:32:45.867 DEBG 41 - - - - - - -> previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=5
+May 01 07:32:45.869 DEBG 41 - - - - - - -> Move North
+May 01 07:32:46.417 DEBG 41 - <- - - - - - - previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+May 01 07:32:46.418 DEBG 42 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=5
+May 01 07:32:46.419 DEBG 42 - - - - - - -> Move East
+May 01 07:32:47.034 DEBG 42 - <- - - - - - - previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+May 01 07:32:47.034 DEBG 43 - - - - - - -> previously visited=Pos2d { col: 1, row: 1 }, unvisted_count=5
+May 01 07:32:47.035 DEBG 43 - - - - - - -> Move East
+May 01 07:32:47.649 DEBG 43 - <- - - - - - - previously visited=Pos2d { col: 2, row: 1 }, unvisted_count=5
+May 01 07:32:47.650 DEBG 44 - ------> newly visited=Pos2d { col: 2, row: 1 }, unvisted_count=5
+May 01 07:32:47.979 DEBG 44 - Move North
+May 01 07:32:52.207 DEBG 44 - <------ newly visited=Pos2d { col: 2, row: 2 }, unvisted_count=4
+May 01 07:32:52.207 DEBG 45 - - - - - - -> previously visited=Pos2d { col: 2, row: 2 }, unvisted_count=4
+May 01 07:32:52.208 DEBG 45 - - - - - - - -> Move West
+May 01 07:32:57.531 DEBG 45 - <- - - - - - - previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=4
+May 01 07:32:57.532 DEBG 46 - - - - - - -> previously visited=Pos2d { col: 1, row: 2 }, unvisted_count=4
+May 01 07:32:57.533 DEBG 46 - - - - - - - -> Move West
+May 01 07:32:59.625 DEBG 46 - <- - - - - - - previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=4
+May 01 07:32:59.626 DEBG 47 - - - - - - -> previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=4
+May 01 07:32:59.628 DEBG 47 - - - - - - -> Move North
+May 01 07:33:01.001 DEBG 47 - <- - - - - - - previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=4
+May 01 07:33:01.002 DEBG 48 - - - - - - -> previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=4
+May 01 07:33:01.003 DEBG 48 - - - - - - - -> Move West
+May 01 07:33:02.331 DEBG 48 - <- - - - - - - previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=4
+May 01 07:33:02.331 DEBG 49 - - - - - - -> previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=4
+May 01 07:33:02.332 DEBG 49 - - - - - - -> Move North
+May 01 07:33:03.810 DEBG 49 - <- - - - - - - previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=4
+May 01 07:33:03.810 DEBG 50 - - - - - - -> previously visited=Pos2d { col: 0, row: 3 }, unvisted_count=4
+May 01 07:33:03.811 DEBG 50 - - - - - - -> Move South
+May 01 07:33:04.889 DEBG 50 - <- - - - - - - previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=4
+May 01 07:33:04.890 DEBG 51 - - - - - - -> previously visited=Pos2d { col: 0, row: 2 }, unvisted_count=4
+May 01 07:33:04.891 DEBG 51 - - - - - - -> Move South
+May 01 07:33:05.977 DEBG 51 - <- - - - - - - previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=4
+May 01 07:33:05.978 DEBG 52 - - - - - - -> previously visited=Pos2d { col: 0, row: 1 }, unvisted_count=4
+May 01 07:33:05.979 DEBG 52 - - - - - - -> Move South
+May 01 07:33:07.006 DEBG 52 - <- - - - - - - previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+May 01 07:33:07.007 DEBG 53 - - - - - - -> previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+May 01 07:33:07.008 DEBG 53 - - - - - - - -> Move West
+May 01 07:33:09.524 DEBG 53 - <- - - - - - - previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+May 01 07:33:09.526 DEBG 54 - - - - - - -> previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+May 01 07:33:09.527 DEBG 54 - - - - - - -> Move South
+May 01 07:33:10.713 DEBG 54 - <- - - - - - - previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+May 01 07:33:10.714 DEBG 55 - - - - - - -> previously visited=Pos2d { col: 0, row: 0 }, unvisted_count=4
+May 01 07:33:10.715 DEBG 55 - - - - - - -> Move East
+May 01 07:33:11.986 DEBG 55 - <- - - - - - - previously visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+May 01 07:33:11.988 DEBG 56 - ------> newly visited=Pos2d { col: 1, row: 0 }, unvisted_count=4
+May 01 07:33:15.625 DEBG 56 - Move East
+May 01 07:33:15.626 DEBG 56 - Link East
+May 01 07:33:15.627 DEBG 56 - <------ newly visited=Pos2d { col: 2, row: 0 }, unvisted_count=3
+May 01 07:33:15.627 DEBG 57 - ------> newly visited=Pos2d { col: 2, row: 0 }, unvisted_count=3
+May 01 07:33:17.034 DEBG 57 - Move South
+May 01 07:33:17.034 DEBG 57 - Link South
+May 01 07:33:17.035 DEBG 57 - <------ newly visited=Pos2d { col: 2, row: 0 }, unvisted_count=3
+May 01 07:33:17.035 DEBG 58 - ------> newly visited=Pos2d { col: 2, row: 0 }, unvisted_count=3
+May 01 07:33:17.713 DEBG 58 - Move North
+May 01 07:33:17.714 DEBG 58 - <------ newly visited=Pos2d { col: 2, row: 1 }, unvisted_count=2
+May 01 07:33:17.714 DEBG 59 - - - - - - -> previously visited=Pos2d { col: 2, row: 1 }, unvisted_count=2
+May 01 07:33:17.715 DEBG 59 - - - - - - -> Move East
+May 01 07:33:19.924 DEBG 59 - <- - - - - - - previously visited=Pos2d { col: 3, row: 1 }, unvisted_count=2
+May 01 07:33:19.925 DEBG 60 - ------> newly visited=Pos2d { col: 3, row: 1 }, unvisted_count=2
+May 01 07:33:21.017 DEBG 60 - Move North
+May 01 07:33:21.017 DEBG 60 - Link North
+May 01 07:33:21.576 DEBG 60 - <------ newly visited=Pos2d { col: 3, row: 2 }, unvisted_count=1
+May 01 07:33:21.576 DEBG 61 - ------> newly visited=Pos2d { col: 3, row: 2 }, unvisted_count=1
+May 01 07:33:22.453 DEBG 61 - Move South
+May 01 07:33:22.453 DEBG 61 - <------ newly visited=Pos2d { col: 3, row: 1 }, unvisted_count=0
++---+---+---+---+
+|       |       |
++---+---+---+---+
+|       |   |   |
++   +---+---+   +
+|   |   |   |   |
++   +---+---+---+
+| 0 |       |   |
++---+---+---+---+

@@ -6,12 +6,12 @@ use maze::Grid;
 use maze::Pos2d;
 #[cfg(not(test))]
 fn main() {
-    let size = 4;
+    let size = 3;
 
     println!("aldous_broder grid");
     let mut grid = Grid::new(size, size);
     grid.init();
-    grid.entrance(Pos2d::p(0, 0));
+    // grid.entrance(Pos2d::p(0, 0));
     maze::aldous_broder::generate(&mut grid);
     grid.display();
     grid.calculate_distances();

@@ -130,6 +130,10 @@ impl Grid {
         self.visited.insert(pos)
     }
 
+    pub fn unvisit_pos(&mut self, pos: Pos2d) -> bool {
+        self.visited.remove(&pos)
+    }
+
     pub fn is_cell_visited(&self, pos: Pos2d) -> bool {
         self.visited.contains(&pos)
     }
