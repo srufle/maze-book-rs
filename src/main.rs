@@ -6,7 +6,7 @@ use maze::Grid;
 use maze::Pos2d;
 #[cfg(not(test))]
 fn main() {
-    let size = 3;
+    let size = 2;
 
     println!("aldous_broder grid");
     let mut grid = Grid::new(size, size);

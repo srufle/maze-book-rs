@@ -134,6 +134,10 @@ impl Grid {
         self.visited.remove(&pos)
     }
 
+    pub fn dump_visited(&self) {
+        println!("{:?}", self.visited);
+    }
+
     pub fn is_cell_visited(&self, pos: Pos2d) -> bool {
         self.visited.contains(&pos)
     }
